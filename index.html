@@ -111,11 +111,13 @@
                sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
                sellingPriceIncl = sellingPriceExcl * 1.21;
                profitAmount = sellingPriceExcl - purchasePrice;
-           } else if (profitAmount > 0) {
+           }
+           if (profitAmount > 0) {
                sellingPriceExcl = purchasePrice + profitAmount;
                sellingPriceIncl = sellingPriceExcl * 1.21;
                profitMargin = (profitAmount / sellingPriceExcl) * 100;
-           } else if (sellingPriceIncl > 0) {
+           }
+           if (sellingPriceIncl > 0) {
                sellingPriceExcl = sellingPriceIncl / 1.21;
                profitAmount = sellingPriceExcl - purchasePrice;
                profitMargin = ((sellingPriceExcl - purchasePrice) / sellingPriceExcl) * 100;
