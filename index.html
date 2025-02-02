@@ -107,50 +107,31 @@
    </div>
 
    <script>
-       function updateFromPurchasePrice() {
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           if (purchasePrice > 0) {
-               updateFromProfitMargin();
-           }
-       }
-
-       function updateFromSellPrice() {
-           const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
-           const discount = parseFloat(document.getElementById('discount').value) || 0;
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           
-           if (sellingPriceIncl > 0) {
-               document.getElementById('discount').disabled = false;
-               const discountedPrice = sellingPriceIncl * (1 - (discount / 100));
-               const sellingPriceExcl = discountedPrice / 1.21;
-               document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
-               
-               if (purchasePrice > 0) {
-                   const profitAmount = sellingPriceExcl - purchasePrice;
-                   const profitMargin = (profitAmount / sellingPriceExcl) * 100;
-                   if (profitMargin <= 100) {
-                       document.getElementById('profitAmount').value = profitAmount.toFixed(2);
-                       document.getElementById('profitMargin').value = profitMargin.toFixed(2);
-                   }
-               }
-           } else {
-               document.getElementById('sellPriceExcl').value = "";
-               document.getElementById('discount').disabled = true;
-           }
-       }
-
        function updateFromDiscount() {
-           updateFromSellPrice();
+           const discount = parseFloat(document.getElementById('discount').value) || 0;
+           const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
+           
+           if (sellingPriceIncl > 0 && discount > 0 && discount <= 100) {
+               const discountedPrice = sellingPriceIncl * (1 - (discount / 100));
+               document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
+               updateFromSellPrice();
+           }
        }
 
-       function updateFromProfitMargin() {
+       function updateFromProfitAmount() {
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
-           if (purchasePrice > 0 && profitMargin > 0 && profitMargin <= 100) {
-               const sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
-               document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = (sellingPriceExcl * 1.21).toFixed(2);
-               document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
+           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           
+           if (purchasePrice > 0 && profitAmount > 0) {
+               const sellingPriceExcl = purchasePrice + profitAmount;
+               const sellingPriceIncl = sellingPriceExcl * 1.21;
+               const profitMargin = (profitAmount / sellingPriceExcl) * 100;
+               
+               if (profitMargin <= 100) {
+                   document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
+                   document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
+                   document.getElementById('profitMargin').value = profitMargin.toFixed(2);
+               }
            }
        }
    </script>
