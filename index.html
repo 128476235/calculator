@@ -72,31 +72,35 @@
        function clearResults() {
            document.getElementById('sellPriceExcl').value = "";
            document.getElementById('sellPriceIncl').value = "";
+           document.getElementById('profitMargin').value = "";
+           document.getElementById('profitAmount').value = "";
        }
 
        function calculateValues() {
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
-           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-
+           let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+           let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           
            if (purchasePrice <= 0) return;
 
+           let sellingPriceExcl, sellingPriceIncl;
+
            if (profitMargin > 0) {
-               const sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
-               const sellingPriceIncl = sellingPriceExcl * 1.21;
-               document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = '€' + sellingPriceIncl.toFixed(2);
-               document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
+               sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
+               profitAmount = sellingPriceExcl - purchasePrice;
+           } else if (profitAmount > 0) {
+               sellingPriceExcl = purchasePrice + profitAmount;
+               profitMargin = (profitAmount / sellingPriceExcl) * 100;
+           } else {
                return;
            }
-
-           if (profitAmount > 0) {
-               const sellingPriceExcl = purchasePrice + profitAmount;
-               const sellingPriceIncl = sellingPriceExcl * 1.21;
-               document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = '€' + sellingPriceIncl.toFixed(2);
-               document.getElementById('profitMargin').value = ((profitAmount / sellingPriceExcl) * 100).toFixed(2);
-           }
+           
+           sellingPriceIncl = sellingPriceExcl * 1.21;
+           
+           document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
+           document.getElementById('sellPriceIncl').value = '€' + sellingPriceIncl.toFixed(2);
+           document.getElementById('profitMargin').value = profitMargin.toFixed(2);
+           document.getElementById('profitAmount').value = profitAmount.toFixed(2);
        }
    </script>
 </body>
