@@ -60,7 +60,7 @@
            </div>
            <div class="field">
                <label>Sell Price (€)</label>
-               <input type="number" id="sellPriceIncl" oninput="calculate()">
+               <input type="number" id="sellPriceIncl" oninput="updateSellPrice()">
            </div>
        </div>
    </div>
@@ -72,17 +72,11 @@
            let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
            let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
 
-           // Herstel de oorspronkelijke prijs wanneer de korting wordt verwijderd
            let discountedPrice = discount > 0 ? purchasePrice * (1 - discount / 100) : purchasePrice;
-
-           // Berekening verkoopprijs excl. BTW met marge
            let sellPriceExcl = discountedPrice * (1 + profitMargin / 100);
            let finalSellPriceIncl = sellPriceExcl * 1.21;
 
-           if (discount === 0) {
-               document.getElementById('sellPriceIncl').value = (purchasePrice * (1 + profitMargin / 100) * 1.21).toFixed(2);
-               document.getElementById('sellPriceExcl').value = (purchasePrice * (1 + profitMargin / 100)).toFixed(2);
-           } else {
+           if (!document.getElementById('sellPriceIncl').dataset.manual) {
                document.getElementById('sellPriceIncl').value = finalSellPriceIncl.toFixed(2);
                document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
            }
@@ -94,6 +88,22 @@
                sellPriceExcl = discountedPrice + profitAmount;
                finalSellPriceIncl = sellPriceExcl * 1.21;
                document.getElementById('profitMargin').value = ((profitAmount / sellPriceExcl) * 100).toFixed(2);
+           }
+       }
+
+       function updateSellPrice() {
+           let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
+           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+
+           if (sellPriceIncl > 0) {
+               document.getElementById('sellPriceIncl').dataset.manual = true;
+               let sellPriceExcl = sellPriceIncl / 1.21;
+               let profitAmount = sellPriceExcl - purchasePrice;
+               let profitMargin = (profitAmount / sellPriceExcl) * 100;
+
+               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
+               document.getElementById('profitAmount').value = profitAmount.toFixed(2);
+               document.getElementById('profitMargin').value = profitMargin.toFixed(2);
            }
        }
    </script>
