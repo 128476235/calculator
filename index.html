@@ -19,6 +19,17 @@
            justify-content: center;
            align-items: flex-start; /* Zorg ervoor dat de container aan de bovenkant blijft */
            padding: 40px 0;
+           overflow: auto;
+       }
+       .content {
+           display: flex;
+           justify-content: center;
+           width: 100%;
+           flex-direction: column;
+           align-items: center;
+           padding: 0 20px;
+           height: 100%;
+           overflow: auto;
        }
        .container {
            text-align: center;
@@ -90,28 +101,30 @@
    </style>
 </head>
 <body>
-   <div class="container">
-       <div class="columns">
-           <div>
-               <label>Purchase Price (excl.)</label>
-               <input type="number" id="purchasePrice" placeholder="">
-               <label>Selling Price (incl.)</label>
-               <input type="number" id="sellingPrice" placeholder="">
-               <button onclick="calculateMargin()">Calculate Margin</button>
-               <div id="resultMargin" class="result"></div>
-           </div>
-           <div>
-               <label>Margin (%)</label>
-               <input type="number" id="profitMargin" placeholder="" readonly>
-               <label>Margin (€)</label>
-               <input type="number" id="profitAmount" placeholder="" readonly>
-               <div class="separator"></div>
-           </div>
-           <div>
-               <label>Desired Margin (%)</label>
-               <input type="number" id="profitMarginCalc" placeholder="">
-               <button onclick="calculateSellingPrice()">Calculate Price</button>
-               <div id="resultSellingPrice" class="result"></div>
+   <div class="content">
+       <div class="container">
+           <div class="columns">
+               <div>
+                   <label>Purchase Price (excl.)</label>
+                   <input type="number" id="purchasePrice" placeholder="">
+                   <label>Selling Price (incl.)</label>
+                   <input type="number" id="sellingPrice" placeholder="">
+                   <button onclick="calculateMargin()">Calculate Margin</button>
+                   <div id="resultMargin" class="result"></div>
+               </div>
+               <div>
+                   <label>Margin (%)</label>
+                   <input type="number" id="profitMargin" placeholder="" readonly>
+                   <label>Margin (€)</label>
+                   <input type="number" id="profitAmount" placeholder="" readonly>
+                   <div class="separator"></div>
+               </div>
+               <div>
+                   <label>Desired Margin (%)</label>
+                   <input type="number" id="profitMarginCalc" placeholder="">
+                   <button onclick="calculateSellingPrice()">Calculate Price</button>
+                   <div id="resultSellingPrice" class="result"></div>
+               </div>
            </div>
        </div>
    </div>
