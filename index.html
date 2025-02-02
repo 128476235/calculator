@@ -48,8 +48,7 @@
            display: flex;
            flex-direction: column;
            gap: 16px;
-           height: auto;
-           min-height: 90vh; /* Altijd zichtbare container zonder scrollen */
+           min-height: 88vh; /* Genoeg ruimte, zelfs als Safari's bookmarkbalk zichtbaar is */
        }
 
        .columns {
@@ -72,6 +71,10 @@
            border-radius: 5px;
            font-size: 16px;
            text-align: left;
+       }
+
+       input:read-only {
+           background-color: #f0f0f0;
        }
 
        input::-webkit-outer-spin-button,
@@ -99,13 +102,6 @@
            background-color: #163D6F;
        }
 
-       .result {
-           margin-top: 8px;
-           font-weight: 500;
-           color: #333;
-           text-align: center;
-       }
-
        .separator {
            border-top: 2px solid #888;
            margin-top: 10px;
@@ -126,7 +122,6 @@
                <label>Selling Price (incl.)</label>
                <input type="number" id="sellingPrice" oninput="clearError('resultMargin')">
                <button onclick="calculateMargin()">Calculate Margin</button>
-               <div id="resultMargin" class="result"></div>
            </div>
            <div>
                <label>Margin (%)</label>
@@ -139,7 +134,14 @@
                <label>Desired Margin (%)</label>
                <input type="number" id="profitMarginCalc" oninput="clearError('resultSellingPrice')">
                <button onclick="calculateSellingPrice()">Calculate Price</button>
-               <div id="resultSellingPrice" class="result"></div>
+           </div>
+           <div>
+               <label>Sell Price (excl.)</label>
+               <input type="text" id="sellPriceExcl" readonly>
+               <label>Sell Price (incl.)</label>
+               <input type="text" id="sellPriceIncl" readonly>
+               <label>Margin (€)</label>
+               <input type="text" id="sellMarginAmount" readonly>
            </div>
        </div>
    </div>
@@ -152,10 +154,9 @@
        function calculateMargin() {
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
-           const resultMargin = document.getElementById('resultMargin');
 
            if (purchasePrice <= 0 || sellingPrice <= 0) {
-               resultMargin.innerText = "Calculation not possible";
+               alert("Calculation not possible");
                return;
            }
 
@@ -165,17 +166,14 @@
 
            document.getElementById('profitMargin').value = marginPercentage.toFixed(2);
            document.getElementById('profitAmount').value = profitAmount.toFixed(2);
-           
-           resultMargin.innerText = "";
        }
 
        function calculateSellingPrice() {
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            const profitMargin = parseFloat(document.getElementById('profitMarginCalc').value) || 0;
-           const resultSellingPrice = document.getElementById('resultSellingPrice');
 
            if (purchasePrice <= 0 || profitMargin <= 0 || profitMargin >= 100) {
-               resultSellingPrice.innerText = "Calculation not possible";
+               alert("Calculation not possible");
                return;
            }
 
@@ -183,9 +181,9 @@
            const sellingPriceIncl = sellingPriceExcl * 1.21;
            const profitAmount = sellingPriceExcl - purchasePrice;
 
-           resultSellingPrice.innerHTML = `<p>Sell price (excl.): €${sellingPriceExcl.toFixed(2)}</p>
-                                           <p>Sell price (incl.): €${sellingPriceIncl.toFixed(2)}</p>
-                                           <p>Margin (€): €${profitAmount.toFixed(2)}</p>`;
+           document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
+           document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
+           document.getElementById('sellMarginAmount').value = profitAmount.toFixed(2);
        }
    </script>
 </body>
