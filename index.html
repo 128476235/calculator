@@ -120,25 +120,27 @@
            let marginAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
            let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
 
-           if (sellPriceIncl > 0 && discount > 0) {
-               originalSellPrice = sellPriceIncl;
-               let discountedPrice = sellPriceIncl * (1 - discount / 100);
-               document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
-               document.getElementById('sellPriceExcl').value = (discountedPrice / 1.21).toFixed(2);
+           if (purchasePrice > 0 && sellPriceIncl > 0) {
+               let sellPriceExcl = sellPriceIncl / 1.21;
+               let profitAmount = sellPriceExcl - purchasePrice;
+               let profitMargin = (profitAmount / sellPriceExcl) * 100;
+               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
+               document.getElementById('profitAmount').value = profitAmount.toFixed(2);
+               document.getElementById('profitMargin').value = profitMargin.toFixed(2);
            }
 
-           if (discount === 0 && originalSellPrice > 0) {
-               document.getElementById('sellPriceIncl').value = originalSellPrice.toFixed(2);
-               document.getElementById('sellPriceExcl').value = (originalSellPrice / 1.21).toFixed(2);
-               document.getElementById('profitMargin').value = '';
-               document.getElementById('profitAmount').value = '';
-           }
-
-           if (purchasePrice > 0 && marginPercent > 0) {
+           if (marginPercent > 0) {
                let sellPriceExcl = purchasePrice / (1 - marginPercent / 100);
                document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = (sellPriceExcl * 1.21).toFixed(2);
                document.getElementById('profitAmount').value = (sellPriceExcl - purchasePrice).toFixed(2);
+           }
+
+           if (marginAmount > 0) {
+               let sellPriceExcl = purchasePrice + marginAmount;
+               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
+               document.getElementById('sellPriceIncl').value = (sellPriceExcl * 1.21).toFixed(2);
+               document.getElementById('profitMargin').value = ((marginAmount / sellPriceExcl) * 100).toFixed(2);
            }
        }
    </script>
