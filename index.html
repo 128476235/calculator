@@ -4,8 +4,8 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
    <meta name="apple-mobile-web-app-capable" content="yes">
-   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-   <title>Simple Calculator</title>
+   <meta name="apple-mobile-web-app-status-bar-style" content="black">
+   <title>Calculator</title>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,6 +40,12 @@
            width: 100%; padding: 10px 10px 10px 25px;
            border: 1px solid #ccc;
            border-radius: 5px; font-size: 14px; text-align: left;
+           -moz-appearance: textfield;
+       }
+       .input-container input::-webkit-outer-spin-button,
+       .input-container input::-webkit-inner-spin-button {
+           -webkit-appearance: none;
+           margin: 0;
        }
        .row { display: flex; gap: 8px; }
    </style>
