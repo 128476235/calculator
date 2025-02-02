@@ -72,13 +72,6 @@
                <input type="number" id="discount" oninput="updateFromDiscount()" disabled>
            </div>
        </div>
-       <div class="field">
-           <label>Discounted Price</label>
-           <div class="input-wrapper">
-               <span>€</span>
-               <input type="number" id="discountedPrice" readonly>
-           </div>
-       </div>
        <div class="row">
            <div class="field">
                <label>Margin</label>
@@ -116,11 +109,13 @@
    <script>
        function updateFromSellPrice() {
            const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
+           const discount = parseFloat(document.getElementById('discount').value) || 0;
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            
            if (sellingPriceIncl > 0) {
                document.getElementById('discount').disabled = false;
-               const sellingPriceExcl = sellingPriceIncl / 1.21;
+               const discountedPrice = sellingPriceIncl * (1 - (discount / 100));
+               const sellingPriceExcl = discountedPrice / 1.21;
                document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
                
                if (purchasePrice > 0) {
@@ -138,15 +133,7 @@
        }
 
        function updateFromDiscount() {
-           const discount = parseFloat(document.getElementById('discount').value) || 0;
-           const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
-           
-           if (sellingPriceIncl > 0 && discount > 0 && discount <= 100) {
-               const discountedPrice = sellingPriceIncl * (1 - (discount / 100));
-               document.getElementById('discountedPrice').value = discountedPrice.toFixed(2);
-           } else {
-               document.getElementById('discountedPrice').value = "";
-           }
+           updateFromSellPrice();
        }
    </script>
 </body>
