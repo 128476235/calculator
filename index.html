@@ -79,6 +79,8 @@
 
            document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
            document.getElementById('sellPriceIncl').value = finalSellPriceIncl.toFixed(2);
+           document.getElementById('profitAmount').value = (sellPriceExcl - discountedPrice).toFixed(2);
+           document.getElementById('profitMargin').value = ((profitAmount / sellPriceExcl) * 100).toFixed(2);
 
            if (profitMargin > 0) {
                document.getElementById('profitAmount').value = (sellPriceExcl - discountedPrice).toFixed(2);
@@ -87,16 +89,10 @@
                sellPriceExcl = discountedPrice + profitAmount;
                finalSellPriceIncl = sellPriceExcl * 1.21;
                document.getElementById('profitMargin').value = ((profitAmount / sellPriceExcl) * 100).toFixed(2);
-               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = finalSellPriceIncl.toFixed(2);
            }
-           if (discount > 0) {
+           if (discount >= 0) {
                document.getElementById('sellPriceIncl').value = finalSellPriceIncl.toFixed(2);
                document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
-           }
-           if (discount === 0) {
-               document.getElementById('discount').value = 0;
-               calculate();
            }
        }
    </script>
