@@ -61,7 +61,7 @@
            <label>Discount</label>
            <div class="input-wrapper">
                <span>%</span>
-               <input type="number" id="discount" oninput="applyDiscount()">
+               <input type="number" id="discount" oninput="calculateValues()">
            </div>
        </div>
        <div class="row">
@@ -101,38 +101,35 @@
    <script>
        function calculateValues() {
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           let discount = parseFloat(document.getElementById('discount').value) || 0;
            let marginPercent = parseFloat(document.getElementById('profitMargin').value) || 0;
            let marginAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
            let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
 
+           let sellPriceExcl;
+
            if (purchasePrice > 0 && marginPercent > 0) {
-               let sellPriceExcl = purchasePrice / (1 - marginPercent / 100);
+               sellPriceExcl = purchasePrice / (1 - marginPercent / 100);
+           } else if (purchasePrice > 0 && marginAmount > 0) {
+               sellPriceExcl = purchasePrice + marginAmount;
+           } else if (sellPriceIncl > 0) {
+               sellPriceExcl = sellPriceIncl / 1.21;
+           }
+
+           if (sellPriceExcl) {
                let finalSellPrice = sellPriceExcl * 1.21;
                document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = finalSellPrice.toFixed(2);
                document.getElementById('profitAmount').value = (sellPriceExcl - purchasePrice).toFixed(2);
+               document.getElementById('profitMargin').value = ((sellPriceExcl - purchasePrice) / sellPriceExcl * 100).toFixed(2);
            }
 
-           if (purchasePrice > 0 && marginAmount > 0) {
-               let sellPriceExcl = purchasePrice + marginAmount;
-               let finalSellPrice = sellPriceExcl * 1.21;
-               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = finalSellPrice.toFixed(2);
-               document.getElementById('profitMargin').value = ((marginAmount / sellPriceExcl) * 100).toFixed(2);
-           }
-       }
-
-       function applyDiscount() {
-           let discount = parseFloat(document.getElementById('discount').value) || 0;
-           let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
-           
-           if (sellPriceIncl > 0 && discount > 0) {
+           if (discount > 0) {
                let discountedPrice = sellPriceIncl * (1 - discount / 100);
                document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
                document.getElementById('sellPriceExcl').value = (discountedPrice / 1.21).toFixed(2);
-               document.getElementById('profitAmount').value = (discountedPrice / 1.21 - parseFloat(document.getElementById('purchasePrice').value)).toFixed(2);
+               document.getElementById('profitAmount').value = (discountedPrice / 1.21 - purchasePrice).toFixed(2);
                document.getElementById('profitMargin').value = ((document.getElementById('profitAmount').value / (discountedPrice / 1.21)) * 100).toFixed(2);
-               document.getElementById('discount').value = '';
            }
        }
    </script>
