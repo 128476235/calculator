@@ -11,17 +11,13 @@
            margin: 0;
            padding: 0;
            overflow-x: hidden;
-       }
-
-       body {
-           font-family: 'Poppins', sans-serif;
            background-color: #f4f4f4;
+           font-family: 'Poppins', sans-serif;
            display: flex;
            justify-content: center;
            align-items: flex-start;
-           padding: 20px;
+           padding: 10px;
            box-sizing: border-box;
-           overflow-x: hidden;
        }
 
        .content {
@@ -30,9 +26,8 @@
            justify-content: center;
            width: 100%;
            max-width: 500px;
-           margin: 0 auto;
-           padding: 20px 0;
-           overflow-y: auto;
+           margin: auto;
+           padding: 10px 0;
            min-height: 100%;
            box-sizing: border-box;
        }
@@ -40,12 +35,12 @@
        .container {
            text-align: center;
            background: white;
-           padding: 40px;
+           padding: 30px;
            border-radius: 8px;
-           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Zachtere schaduw */
            width: 100%;
-           margin-top: 10vh;
-           margin-bottom: 10vh;
+           margin-top: 5vh;
+           margin-bottom: 5vh;
            display: flex;
            flex-direction: column;
            gap: 15px;
@@ -69,23 +64,16 @@
 
        input {
            width: 100%;
-           padding: 14px;
+           padding: 12px;
            border: 1px solid #ccc;
            border-radius: 5px;
            box-sizing: border-box;
            font-size: 16px;
-           -moz-appearance: textfield;
-       }
-
-       input::-webkit-outer-spin-button,
-       input::-webkit-inner-spin-button {
-           -webkit-appearance: none;
-           margin: 0;
        }
 
        button {
            width: 100%;
-           padding: 16px;
+           padding: 14px;
            background-color: #1E4E8C;
            color: white;
            border: none;
@@ -94,12 +82,11 @@
            border-radius: 5px;
            font-size: 16px;
            margin-top: 15px;
-           transition: background-color 0.3s ease, transform 0.2s ease;
+           transition: background-color 0.3s ease;
        }
 
        button:hover {
            background-color: #163D6F;
-           transform: scale(1.05);
        }
 
        .result {
@@ -165,10 +152,7 @@
            document.getElementById('profitMargin').value = marginPercentage.toFixed(2);
            document.getElementById('profitAmount').value = profitAmount.toFixed(2);
            
-           resultMargin.innerText = ""; // Verwijder de foutmelding als de berekening lukt
-
-           // Zorg dat de container volledig zichtbaar blijft na berekening
-           document.querySelector('.container').scrollIntoView({ behavior: "smooth", block: "nearest" });
+           resultMargin.innerText = ""; // Verwijder foutmelding als de berekening lukt
        }
 
        function calculateSellingPrice() {
@@ -191,8 +175,6 @@
            resultSellingPrice.innerHTML = `<p>Sell price (excl.): €${sellingPriceExcl.toFixed(2)}</p>
                                            <p>Sell price (incl.): €${sellingPriceIncl.toFixed(2)}</p>
                                            <p>Margin (€): €${profitAmount.toFixed(2)}</p>`;
-           
-           resultSellingPrice.scrollIntoView({ behavior: "smooth", block: "nearest" });
        }
    </script>
 </body>
