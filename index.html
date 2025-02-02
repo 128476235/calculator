@@ -32,6 +32,11 @@
            box-sizing: border-box;
        }
 
+       /* Scrollbar verbergen in Safari en Chrome */
+       ::-webkit-scrollbar {
+           display: none;
+       }
+
        .content {
            display: flex;
            flex-direction: column;
@@ -40,7 +45,7 @@
            max-width: 500px;
            margin: 0 auto;
            padding: 10px 0;
-           min-height: 100vh; /* Belangrijk: Zorgt dat content correct wordt weergegeven */
+           min-height: 100vh;
            box-sizing: border-box;
        }
 
