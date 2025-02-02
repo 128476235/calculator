@@ -6,12 +6,14 @@
    <title>Calculator</title>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <style>
-       /* Zorg ervoor dat de hele pagina de volledige hoogte van het scherm beslaat */
+       /* Zorg ervoor dat de gehele pagina de volledige hoogte van het scherm beslaat */
        html, body {
            height: 100%;
            margin: 0;
            padding: 0;
+           overflow-x: hidden; /* Voorkom horizontaal scrollen */
        }
+
        body {
            font-family: 'Poppins', sans-serif;
            background-color: #f4f4f4;
@@ -20,8 +22,8 @@
            align-items: flex-start; /* De container wordt aan de bovenkant uitgelijnd */
            padding: 20px;
            box-sizing: border-box;
-           overflow-x: hidden; /* Voorkom horizontaal scrollen */
        }
+
        .content {
            display: flex;
            flex-direction: column;
@@ -33,6 +35,7 @@
            overflow-y: auto;
            min-height: 100%; /* De container neemt altijd minstens 100% van de schermhoogte in */
        }
+
        .container {
            text-align: center;
            background: white;
@@ -47,18 +50,21 @@
            gap: 15px;
            justify-content: space-between;
        }
+
        .columns {
            display: flex;
            flex-direction: column;
            gap: 15px;
            width: 100%;
        }
+
        label {
            font-weight: 500;
            display: block;
            text-align: left;
            margin-bottom: 8px;
        }
+
        input {
            width: 100%;
            padding: 14px;
@@ -68,11 +74,13 @@
            font-size: 16px;
            -moz-appearance: textfield;
        }
+
        input::-webkit-outer-spin-button,
        input::-webkit-inner-spin-button {
            -webkit-appearance: none;
            margin: 0;
        }
+
        button {
            width: 100%;
            padding: 16px;
@@ -86,15 +94,18 @@
            margin-top: 15px;
            transition: background-color 0.3s ease, transform 0.2s ease;
        }
+
        button:hover {
            background-color: #163D6F;
            transform: scale(1.05);
        }
+
        .result {
            margin-top: 15px;
            font-weight: 500;
            color: #333;
        }
+
        .separator {
            border-top: 2px solid #888;
            margin-top: 20px;
@@ -169,4 +180,3 @@
    </script>
 </body>
 </html>
-
