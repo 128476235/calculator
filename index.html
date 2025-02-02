@@ -25,38 +25,66 @@
        }
        .field { display: flex; flex-direction: column; gap: 4px; }
        label { font-weight: 500; text-align: left; }
-       input {
-           width: 100%; padding: 10px; border: 1px solid #ccc;
-           border-radius: 5px; font-size: 14px; text-align: left;
-       }
        .row { display: flex; gap: 8px; }
-       .row input { text-align: center; }
+       .row .field { flex: 1; }
+       .input-group {
+           display: flex;
+           align-items: center;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           overflow: hidden;
+       }
+       .input-group span {
+           background: #eee;
+           padding: 10px;
+           font-size: 14px;
+           border-right: 1px solid #ccc;
+       }
+       .input-group input {
+           width: 100%; padding: 10px; border: none;
+           font-size: 14px; text-align: left;
+       }
    </style>
 </head>
 <body>
    <div class="container">
        <div class="field">
            <label>Purchase Price</label>
-           <input type="number" id="purchasePrice" oninput="calculate()">
+           <div class="input-group">
+               <span>€</span>
+               <input type="number" id="purchasePrice" oninput="calculate()">
+           </div>
        </div>
        <div class="row">
            <div class="field">
-               <label>Margin (€)</label>
-               <input type="number" id="profitAmount" oninput="calculate()">
+               <label>Margin (%)</label>
+               <div class="input-group">
+                   <span>%</span>
+                   <input type="number" id="profitMargin" oninput="calculate()">
+               </div>
            </div>
            <div class="field">
-               <label>Margin (%)</label>
-               <input type="number" id="profitMargin" oninput="calculate()">
+               <label>Margin (€)</label>
+               <div class="input-group">
+                   <span>€</span>
+                   <input type="number" id="profitAmount" oninput="calculate()">
+               </div>
            </div>
        </div>
        <div class="row">
            <div class="field">
                <label>Net Price</label>
-               <input type="number" id="sellPriceExcl" readonly>
+               <div class="input-group">
+                   <span>€</span>
+                   <input type="number" id="sellPriceExcl" readonly>
+               </div>
            </div>
            <div class="field">
                <label>Selling Price</label>
-               <input type="number" id="sellPriceIncl" oninput="calculate()">
+               <div class="input-group">
+                   <span>€</span>
+                   <input type="number" id="sellPriceIncl" oninput="calculate()">
+               </div>
            </div>
        </div>
    </div>
