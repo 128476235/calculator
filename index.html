@@ -3,14 +3,7 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-   <meta name="apple-mobile-web-app-capable" content="yes">
-   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-   <title>Simple Calculator</title>
-   <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
-   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-   <link rel="manifest" href="site.webmanifest">
+   <title>Calculator</title>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,48 +14,37 @@
            padding: 2vw;
        }
        .container {
-           width: 100%; max-width: 400px; background: white;
-           padding: 20px; border-radius: 12px;
-           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 16px;
+           width: 100%; max-width: 350px; background: white;
+           padding: 15px; border-radius: 8px;
+           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+           display: flex; flex-direction: column; gap: 12px;
            justify-content: center;
        }
-       .field { display: flex; flex-direction: column; gap: 6px; position: relative; }
-       label { font-weight: 600; text-align: left; font-size: 16px; }
+       .field { display: flex; flex-direction: column; gap: 4px; }
+       label { font-weight: 500; text-align: left; }
        .input-container {
            display: flex;
            align-items: center;
-           position: relative;
-           background: #f9f9f9;
-           border-radius: 6px;
-           padding: 6px;
+           border: 1px solid #ccc;
+           border-radius: 5px;
+           padding: 10px;
+           font-size: 14px;
+           background: white;
        }
        .input-container span {
-           position: absolute;
-           left: 12px;
-           font-size: 16px;
+           margin-right: 5px;
            color: #555;
-           font-weight: bold;
        }
-       .input-container input {
-           width: 100%; padding: 10px 10px 10px 30px;
-           border: none;
-           border-radius: 6px; font-size: 16px; text-align: left;
-           background: transparent;
-           outline: none;
-           font-weight: 500;
+       input {
+           width: 100%; border: none; outline: none;
+           font-size: 14px;
        }
-       .input-container input::-webkit-outer-spin-button,
-       .input-container input::-webkit-inner-spin-button {
-           -webkit-appearance: none;
-           margin: 0;
-       }
-       .row { display: flex; gap: 10px; }
-       .input-container input:read-only {
-           color: #555;
-           font-weight: bold;
-           background: #e9e9e9;
-           cursor: not-allowed;
+       .row { display: flex; gap: 8px; }
+       button {
+           width: 100%; padding: 12px; background-color: #1E4E8C;
+           color: white; border: none; cursor: pointer; font-weight: bold;
+           border-radius: 5px; font-size: 14px;
+           transition: background-color 0.3s ease; margin-top: 10px;
        }
    </style>
 </head>
@@ -70,74 +52,58 @@
    <div class="container">
        <div class="field">
            <label>Purchase Price</label>
-           <div class="input-container">
-               <span>€</span>
-               <input type="number" step="0.01" min="0" id="purchasePrice" oninput="calculateValues()">
-           </div>
+           <div class="input-container"><span>€</span><input type="number" id="purchasePrice" oninput="clearResults()"></div>
        </div>
        <div class="row">
            <div class="field">
                <label>Margin</label>
-               <div class="input-container">
-                   <span>€</span>
-                   <input type="number" step="0.01" min="0" id="profitAmount" oninput="calculateValues()">
-               </div>
+               <div class="input-container"><span>€</span><input type="number" id="profitAmount" oninput="clearResults()"></div>
            </div>
            <div class="field">
-               <label>Margin</label>
-               <div class="input-container">
-                   <span>%</span>
-                   <input type="number" step="0.01" min="0" max="100" id="profitMargin" oninput="calculateValues()">
-               </div>
+               <label>&nbsp;</label>
+               <div class="input-container"><span>%</span><input type="number" id="profitMargin" oninput="clearResults()"></div>
            </div>
        </div>
-       <div class="field">
-           <label>Net Price</label>
-           <div class="input-container">
-               <span>€</span>
-               <input type="text" id="sellPriceExcl" readonly>
+       <div class="row">
+           <div class="field">
+               <label>Net Price</label>
+               <div class="input-container"><span>€</span><input type="text" id="sellPriceExcl" readonly></div>
+           </div>
+           <div class="field">
+               <label>Sell Price</label>
+               <div class="input-container"><span>€</span><input type="text" id="sellPriceIncl" readonly></div>
            </div>
        </div>
-       <div class="field">
-           <label>Selling Price</label>
-           <div class="input-container">
-               <span>€</span>
-               <input type="number" step="0.01" min="0" id="sellPriceIncl" oninput="calculateValues()">
-           </div>
-       </div>
+       <button onclick="calculateValues()">Calculate</button>
    </div>
 
    <script>
+       function clearResults() {
+           document.getElementById('sellPriceExcl').value = "";
+           document.getElementById('sellPriceIncl').value = "";
+       }
+
        function calculateValues() {
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value.replace(',', '.')) || 0;
-           let profitMargin = parseFloat(document.getElementById('profitMargin').value.replace(',', '.')) || 0;
-           let profitAmount = parseFloat(document.getElementById('profitAmount').value.replace(',', '.')) || 0;
-           let sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value.replace(',', '.')) || 0;
+           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
            
            if (purchasePrice <= 0) return;
            
            let sellingPriceExcl = 0;
+           let sellingPriceIncl = 0;
            
            if (profitMargin > 0) {
                sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
-               sellingPriceIncl = sellingPriceExcl * 1.21;
-               profitAmount = sellingPriceExcl - purchasePrice;
-           }
-           if (profitAmount > 0) {
+               document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
+           } else if (profitAmount > 0) {
                sellingPriceExcl = purchasePrice + profitAmount;
-               sellingPriceIncl = sellingPriceExcl * 1.21;
-               profitMargin = (profitAmount / sellingPriceExcl) * 100;
-           }
-           if (sellingPriceIncl > 0) {
-               sellingPriceExcl = sellingPriceIncl / 1.21;
-               profitAmount = sellingPriceExcl - purchasePrice;
-               profitMargin = ((sellingPriceExcl - purchasePrice) / sellingPriceExcl) * 100;
+               document.getElementById('profitMargin').value = ((profitAmount / sellingPriceExcl) * 100).toFixed(2);
            }
            
-           document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2).replace('.', ',');
-           document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2).replace('.', ',');
-           document.getElementById('profitAmount').value = profitAmount.toFixed(2).replace('.', ',');
-           document.getElementById('profitMargin').value = profitMargin.toFixed(2).replace('.', ',');
+           sellingPriceIncl = sellingPriceExcl * 1.21;
+           document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
+           document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
        }
    </script>
 </body>
