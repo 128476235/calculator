@@ -50,11 +50,11 @@
        <div class="row">
            <div class="field">
                <label>Margin (%)</label>
-               <input type="number" id="profitMargin" oninput="clearResults(true)">
+               <input type="number" id="profitMargin" oninput="clearResults()">
            </div>
            <div class="field">
                <label>Margin (€)</label>
-               <input type="number" id="profitAmount" oninput="clearResults(true)">
+               <input type="number" id="profitAmount" oninput="clearResults()">
            </div>
        </div>
        <div class="row">
@@ -71,20 +71,27 @@
    </div>
 
    <script>
-       function clearResults(clearSelling = false) {
+       function clearResults() {
            document.getElementById('sellPriceExcl').value = "";
            document.getElementById('sellPriceIncl').value = "";
-           document.getElementById('profitMargin').value = clearSelling ? "" : document.getElementById('profitMargin').value;
-           document.getElementById('profitAmount').value = clearSelling ? "" : document.getElementById('profitAmount').value;
-           if (clearSelling) {
-               document.getElementById('sellingPrice').value = "";
-           }
+           document.getElementById('profitMargin').value = "";
+           document.getElementById('profitAmount').value = "";
+           document.getElementById('sellingPrice').value = "";
        }
 
        function calculateValues() {
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
            const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
            const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           
+           if (purchasePrice > 0 && sellingPrice > 0) {
+               const sellingPriceExcl = sellingPrice / 1.21;
+               document.getElementById('profitMargin').value = ((sellingPriceExcl - purchasePrice) / sellingPriceExcl * 100).toFixed(2);
+               document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
+               document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
+               document.getElementById('sellPriceIncl').value = '€' + sellingPrice.toFixed(2);
+           }
 
            if (purchasePrice > 0 && profitMargin > 0) {
                const sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
