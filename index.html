@@ -22,6 +22,17 @@
            display: flex; flex-direction: column; gap: 12px;
            min-height: auto;
            justify-content: center;
+           position: relative;
+       }
+       .reset-btn {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           background: none;
+           border: none;
+           cursor: pointer;
+           font-size: 20px;
+           color: #555;
        }
        .field { display: flex; flex-direction: column; gap: 4px; }
        label { font-weight: 500; text-align: left; }
@@ -58,18 +69,19 @@
 </head>
 <body>
    <div class="container">
+       <button class="reset-btn" onclick="resetCalculator()">🔄</button>
        <div class="field">
            <label>Purchase Price</label>
            <div class="input-wrapper">
                <span>€</span>
-               <input type="number" id="purchasePrice" oninput="updateFromPurchasePrice()">
+               <input type="number" id="purchasePrice" oninput="calculateValues()">
            </div>
        </div>
        <div class="field">
            <label>Discount</label>
            <div class="input-wrapper">
                <span>%</span>
-               <input type="number" id="discount" oninput="updateFromDiscount()" disabled>
+               <input type="number" id="discount" oninput="calculateValues()">
            </div>
        </div>
        <div class="row">
@@ -77,14 +89,14 @@
                <label>Margin</label>
                <div class="input-wrapper">
                    <span>%</span>
-                   <input type="number" id="profitMargin" oninput="updateFromProfitMargin()">
+                   <input type="number" id="profitMargin" oninput="calculateValues()">
                </div>
            </div>
            <div class="field">
                <label>Margin</label>
                <div class="input-wrapper">
                    <span>€</span>
-                   <input type="number" id="profitAmount" oninput="updateFromProfitAmount()">
+                   <input type="number" id="profitAmount" oninput="calculateValues()">
                </div>
            </div>
        </div>
@@ -100,46 +112,42 @@
                <label>Sell Price</label>
                <div class="input-wrapper">
                    <span>€</span>
-                   <input type="number" id="sellPriceIncl" oninput="updateFromSellPrice()">
+                   <input type="number" id="sellPriceIncl" oninput="calculateValues()">
                </div>
            </div>
        </div>
    </div>
 
    <script>
-       let originalSellPrice = 0;
+       function calculateValues() {
+           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           let discount = parseFloat(document.getElementById('discount').value) || 0;
+           let marginPercent = parseFloat(document.getElementById('profitMargin').value) || 0;
+           let marginAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
 
-       function updateFromDiscount() {
-           const discount = parseFloat(document.getElementById('discount').value) || 0;
-           let sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
-           
-           if (sellingPriceIncl > 0) {
-               if (discount > 0 && discount <= 100) {
-                   originalSellPrice = sellingPriceIncl;
-                   const discountedPrice = sellingPriceIncl * (1 - (discount / 100));
-                   document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
-               } else {
-                   document.getElementById('sellPriceIncl').value = originalSellPrice.toFixed(2);
-               }
-               updateFromSellPrice();
+           if (sellPriceIncl > 0 && discount > 0) {
+               sellPriceIncl = sellPriceIncl * (1 - discount / 100);
+               document.getElementById('sellPriceIncl').value = sellPriceIncl.toFixed(2);
+           }
+
+           if (purchasePrice > 0 && marginPercent > 0) {
+               let sellPriceExcl = purchasePrice / (1 - marginPercent / 100);
+               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
+               document.getElementById('sellPriceIncl').value = (sellPriceExcl * 1.21).toFixed(2);
+               document.getElementById('profitAmount').value = (sellPriceExcl - purchasePrice).toFixed(2);
+           }
+
+           if (purchasePrice > 0 && marginAmount > 0) {
+               let sellPriceExcl = purchasePrice + marginAmount;
+               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
+               document.getElementById('sellPriceIncl').value = (sellPriceExcl * 1.21).toFixed(2);
+               document.getElementById('profitMargin').value = ((marginAmount / sellPriceExcl) * 100).toFixed(2);
            }
        }
 
-       function updateFromProfitAmount() {
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-           
-           if (purchasePrice > 0 && profitAmount > 0) {
-               const sellingPriceExcl = purchasePrice + profitAmount;
-               const sellingPriceIncl = sellingPriceExcl * 1.21;
-               const profitMargin = (profitAmount / sellingPriceExcl) * 100;
-               
-               if (profitMargin <= 100) {
-                   document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
-                   document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
-                   document.getElementById('profitMargin').value = profitMargin.toFixed(2);
-               }
-           }
+       function resetCalculator() {
+           document.querySelectorAll('input').forEach(input => input.value = '');
        }
    </script>
 </body>
