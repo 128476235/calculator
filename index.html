@@ -71,16 +71,21 @@
            let discount = parseFloat(document.getElementById('discount').value) || 0;
            let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
            let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-           let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
 
-           let discountedPrice = purchasePrice * (1 - discount / 100);
+           // Herstel de oorspronkelijke prijs wanneer de korting wordt verwijderd
+           let discountedPrice = discount > 0 ? purchasePrice * (1 - discount / 100) : purchasePrice;
+
+           // Berekening verkoopprijs excl. BTW met marge
            let sellPriceExcl = discountedPrice * (1 + profitMargin / 100);
            let finalSellPriceIncl = sellPriceExcl * 1.21;
 
-           document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
-           document.getElementById('sellPriceIncl').value = finalSellPriceIncl.toFixed(2);
-           document.getElementById('profitAmount').value = (sellPriceExcl - discountedPrice).toFixed(2);
-           document.getElementById('profitMargin').value = ((profitAmount / sellPriceExcl) * 100).toFixed(2);
+           if (discount === 0) {
+               document.getElementById('sellPriceIncl').value = (purchasePrice * (1 + profitMargin / 100) * 1.21).toFixed(2);
+               document.getElementById('sellPriceExcl').value = (purchasePrice * (1 + profitMargin / 100)).toFixed(2);
+           } else {
+               document.getElementById('sellPriceIncl').value = finalSellPriceIncl.toFixed(2);
+               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
+           }
 
            if (profitMargin > 0) {
                document.getElementById('profitAmount').value = (sellPriceExcl - discountedPrice).toFixed(2);
@@ -89,10 +94,6 @@
                sellPriceExcl = discountedPrice + profitAmount;
                finalSellPriceIncl = sellPriceExcl * 1.21;
                document.getElementById('profitMargin').value = ((profitAmount / sellPriceExcl) * 100).toFixed(2);
-           }
-           if (discount >= 0) {
-               document.getElementById('sellPriceIncl').value = finalSellPriceIncl.toFixed(2);
-               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
            }
        }
    </script>
