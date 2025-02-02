@@ -22,6 +22,7 @@
            align-items: flex-start; /* De container wordt aan de bovenkant uitgelijnd */
            padding: 20px;
            box-sizing: border-box;
+           overflow-x: hidden; /* Voorkom horizontaal scrollen */
        }
 
        .content {
@@ -34,6 +35,7 @@
            padding: 20px 0;
            overflow-y: auto;
            min-height: 100%; /* De container neemt altijd minstens 100% van de schermhoogte in */
+           box-sizing: border-box;
        }
 
        .container {
@@ -49,6 +51,7 @@
            flex-direction: column;
            gap: 15px;
            justify-content: space-between;
+           box-sizing: border-box;
        }
 
        .columns {
