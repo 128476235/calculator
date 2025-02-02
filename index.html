@@ -57,6 +57,12 @@
            gap: 12px;
        }
 
+       .row {
+           display: flex;
+           justify-content: space-between;
+           gap: 12px;
+       }
+
        label {
            font-weight: 500;
            display: block;
@@ -123,25 +129,37 @@
                <input type="number" id="sellingPrice" oninput="clearError('resultMargin')">
                <button onclick="calculateMargin()">Calculate Margin</button>
            </div>
-           <div>
-               <label>Margin (%)</label>
-               <input type="text" id="profitMargin" readonly>
-               <label>Margin (€)</label>
-               <input type="text" id="profitAmount" readonly class="extra-space">
-               <div class="separator"></div>
+           <div class="row">
+               <div>
+                   <label>Margin (%)</label>
+                   <input type="text" id="profitMargin" readonly>
+               </div>
+               <div>
+                   <label>Margin (€)</label>
+                   <input type="text" id="profitAmount" readonly class="extra-space">
+               </div>
            </div>
+           <div class="separator"></div>
            <div>
                <label>Desired Margin (%)</label>
                <input type="number" id="profitMarginCalc" oninput="clearError('resultSellingPrice')">
                <button onclick="calculateSellingPrice()">Calculate Price</button>
            </div>
-           <div>
-               <label>Sell Price (excl.)</label>
-               <input type="text" id="sellPriceExcl" readonly>
-               <label>Sell Price (incl.)</label>
-               <input type="text" id="sellPriceIncl" readonly>
-               <label>Margin (€)</label>
-               <input type="text" id="sellMarginAmount" readonly>
+           <div class="row">
+               <div>
+                   <label>Sell Price (Excl. VAT)</label>
+                   <input type="text" id="sellPriceExcl" readonly>
+               </div>
+               <div>
+                   <label>Sell Price</label>
+                   <input type="text" id="sellPriceIncl" readonly>
+               </div>
+           </div>
+           <div class="row">
+               <div>
+                   <label>Margin (€)</label>
+                   <input type="text" id="sellMarginAmount" readonly>
+               </div>
            </div>
        </div>
    </div>
