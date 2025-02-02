@@ -6,7 +6,7 @@
    <title>Calculator</title>
    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
        html, body {
@@ -14,18 +14,20 @@
            background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
            display: flex; align-items: center; justify-content: center;
            padding: 2vw;
+           -webkit-user-select: none;
+           user-select: none;
        }
        .container {
-           width: 100%; max-width: 380px; background: white;
-           padding: 15px; border-radius: 8px;
-           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 12px;
+           width: 90%; max-width: 450px; background: white;
+           padding: 20px; border-radius: 12px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           display: flex; flex-direction: column; gap: 14px;
            min-height: auto;
            justify-content: center;
            position: relative;
        }
-       .field { display: flex; flex-direction: column; gap: 4px; width: 100%; }
-       label { font-weight: 500; text-align: left; }
+       .field { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+       label { font-weight: 600; text-align: left; font-size: 16px; }
        .input-wrapper {
            display: flex;
            align-items: center;
@@ -33,21 +35,21 @@
        }
        .input-wrapper span {
            position: absolute;
-           left: 10px;
-           font-size: 14px;
+           left: 12px;
+           font-size: 16px;
            font-weight: bold;
        }
        input {
-           width: 100%; padding: 10px 10px 10px 25px; border: 1px solid #ccc;
-           border-radius: 5px; font-size: 14px; text-align: left;
-           -moz-appearance: textfield;
+           width: 100%; padding: 14px 14px 14px 30px; border: 1px solid #bbb;
+           border-radius: 8px; font-size: 16px; text-align: left;
+           -moz-appearance: none;
            -webkit-appearance: none;
            appearance: none;
        }
        input:focus {
-           outline: 2px solid #1E4E8C;
+           outline: 3px solid #1E4E8C;
        }
-       .row { display: flex; gap: 8px; width: 100%; }
+       .row { display: flex; gap: 10px; width: 100%; }
        .row input { text-align: left; }
    </style>
 </head>
@@ -132,6 +134,14 @@
                document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = sellPriceIncl.toFixed(2);
                document.getElementById('profitMargin').value = ((marginAmount / sellPriceExcl) * 100).toFixed(2);
+           }
+
+           if (discount > 0) {
+               let discountedPrice = sellPriceIncl * (1 - discount / 100);
+               document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
+               document.getElementById('sellPriceExcl').value = (discountedPrice / 1.21).toFixed(2);
+               document.getElementById('profitAmount').value = (discountedPrice / 1.21 - purchasePrice).toFixed(2);
+               document.getElementById('profitMargin').value = ((document.getElementById('profitAmount').value / (discountedPrice / 1.21)) * 100).toFixed(2);
            }
        }
    </script>
