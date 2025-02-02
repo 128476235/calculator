@@ -12,9 +12,6 @@
    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
    <meta name="apple-mobile-web-app-title" content="Calculator">
    <meta name="theme-color" content="#ffffff">
-   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-   <link rel="shortcut icon" href="/favicon.ico">
    <link rel="manifest" href="/site.webmanifest">
 
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
@@ -28,13 +25,13 @@
        html, body {
            width: 100%;
            height: 100%;
-           overflow: hidden; /* Voorkomt scrollen */
+           overflow: hidden;
            background-color: #f4f4f4;
            font-family: 'Poppins', sans-serif;
            display: flex;
            align-items: center;
            justify-content: center;
-           padding: 10px;
+           padding: 5vw; /* Houdt witruimte consistent zonder overdaad */
        }
 
        ::-webkit-scrollbar {
@@ -50,22 +47,22 @@
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
            display: flex;
            flex-direction: column;
-           gap: 16px; /* Algemene witruimte */
-           height: 90vh;
+           gap: 16px;
+           height: auto;
+           min-height: 90vh; /* Altijd zichtbare container zonder scrollen */
        }
 
        .columns {
            display: flex;
            flex-direction: column;
-           gap: 14px; /* Meer witruimte tussen tekst en veld */
-           flex-grow: 1;
+           gap: 12px;
        }
 
        label {
            font-weight: 500;
            display: block;
            text-align: left;
-           margin-bottom: 6px; /* Extra ruimte tussen tekst en veld */
+           margin-bottom: 6px;
        }
 
        input {
@@ -75,7 +72,6 @@
            border-radius: 5px;
            font-size: 16px;
            text-align: left;
-           -moz-appearance: textfield;
        }
 
        input::-webkit-outer-spin-button,
@@ -86,7 +82,7 @@
 
        button {
            width: 100%;
-           padding: 16px;
+           padding: 14px;
            background-color: #1E4E8C;
            color: white;
            border: none;
@@ -96,7 +92,7 @@
            font-size: 16px;
            transition: background-color 0.3s ease;
            touch-action: manipulation;
-           margin-top: 10px; /* Knoppen losgemaakt van velden */
+           margin-top: 12px; /* Knoppen losgetrokken van velden */
        }
 
        button:hover {
@@ -104,7 +100,7 @@
        }
 
        .result {
-           margin-top: 8px; /* Margin % dichter onder de button */
+           margin-top: 8px;
            font-weight: 500;
            color: #333;
            text-align: center;
@@ -112,14 +108,13 @@
 
        .separator {
            border-top: 2px solid #888;
-           margin-top: 8px; /* Desired Margin dichter onder de streep */
-           padding-top: 6px;
+           margin-top: 10px;
+           padding-top: 4px;
        }
 
-       .margin-bottom-extra {
+       .extra-space {
            margin-bottom: 14px; /* Extra witruimte onder Margin (€) */
        }
-
    </style>
 </head>
 <body>
@@ -137,7 +132,7 @@
                <label>Margin (%)</label>
                <input type="text" id="profitMargin" readonly>
                <label>Margin (€)</label>
-               <input type="text" id="profitAmount" readonly class="margin-bottom-extra">
+               <input type="text" id="profitAmount" readonly class="extra-space">
                <div class="separator"></div>
            </div>
            <div>
