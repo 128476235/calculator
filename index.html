@@ -13,28 +13,29 @@
            width: 100%; height: 100%; overflow: hidden;
            background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
            display: flex; align-items: center; justify-content: center;
-           padding: 5vw;
+           padding: 2vw;
        }
        .container {
-           width: 100%; max-width: 400px; background: white;
-           padding: 20px; border-radius: 10px;
+           width: 100%; max-width: 380px; background: white;
+           padding: 15px; border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 16px;
-           min-height: 88vh;
+           display: flex; flex-direction: column; gap: 12px;
+           min-height: auto;
+           justify-content: center;
        }
-       .field { display: flex; flex-direction: column; gap: 6px; }
+       .field { display: flex; flex-direction: column; gap: 4px; }
        label { font-weight: 500; text-align: left; }
        input {
-           width: 100%; padding: 12px; border: 1px solid #ccc;
-           border-radius: 5px; font-size: 16px; text-align: left;
+           width: 100%; padding: 10px; border: 1px solid #ccc;
+           border-radius: 5px; font-size: 14px; text-align: left;
        }
        button {
-           width: 100%; padding: 14px; background-color: #1E4E8C;
+           width: 100%; padding: 12px; background-color: #1E4E8C;
            color: white; border: none; cursor: pointer; font-weight: bold;
-           border-radius: 5px; font-size: 16px;
-           transition: background-color 0.3s ease; margin-top: 12px;
+           border-radius: 5px; font-size: 14px;
+           transition: background-color 0.3s ease; margin-top: 10px;
        }
-       .row { display: flex; gap: 12px; }
+       .row { display: flex; gap: 8px; }
        .row input { text-align: center; }
    </style>
 </head>
@@ -42,21 +43,20 @@
    <div class="container">
        <div>
            <label>Purchase Price (excl.)</label>
-           <input type="number" id="purchasePrice" oninput="clearResults()">
+           <input type="number" id="purchasePrice">
            <label>Selling Price (incl.)</label>
-           <input type="number" id="sellingPrice" oninput="clearResults()">
+           <input type="number" id="sellingPrice">
        </div>
        <div class="row">
            <div class="field">
                <label>Margin (%)</label>
-               <input type="number" id="profitMargin" oninput="clearResults(true)">
+               <input type="number" id="profitMargin">
            </div>
            <div class="field">
                <label>Margin (€)</label>
-               <input type="number" id="profitAmount" oninput="clearResults(true)">
+               <input type="number" id="profitAmount">
            </div>
        </div>
-       <button onclick="calculateValues()">Calculate</button>
        <div class="row">
            <div class="field">
                <label>Net Price</label>
@@ -67,32 +67,22 @@
                <input type="text" id="sellPriceIncl" readonly>
            </div>
        </div>
+       <button onclick="calculateValues()">Calculate</button>
    </div>
 
    <script>
-       function clearResults(clearSelling = false) {
-           document.getElementById('sellPriceExcl').value = "";
-           document.getElementById('sellPriceIncl').value = "";
-           document.getElementById('profitMargin').value = clearSelling ? "" : document.getElementById('profitMargin').value;
-           document.getElementById('profitAmount').value = clearSelling ? "" : document.getElementById('profitAmount').value;
-           if (clearSelling) {
-               document.getElementById('sellingPrice').value = "";
-           }
-       }
-
        function calculateValues() {
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
            const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
            const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-
+           
            if (purchasePrice > 0 && sellingPrice > 0) {
                const sellingPriceExcl = sellingPrice / 1.21;
                document.getElementById('profitMargin').value = ((sellingPriceExcl - purchasePrice) / sellingPriceExcl * 100).toFixed(2);
                document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
                document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = '€' + sellingPrice.toFixed(2);
-               return;
            }
 
            if (purchasePrice > 0 && profitMargin > 0) {
@@ -101,7 +91,6 @@
                document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = '€' + sellingPriceIncl.toFixed(2);
                document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
-               document.getElementById('sellingPrice').value = sellingPriceIncl.toFixed(2);
            }
 
            if (purchasePrice > 0 && profitAmount > 0) {
@@ -110,7 +99,6 @@
                document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = '€' + sellingPriceIncl.toFixed(2);
                document.getElementById('profitMargin').value = ((profitAmount / sellingPriceExcl) * 100).toFixed(2);
-               document.getElementById('sellingPrice').value = sellingPriceIncl.toFixed(2);
            }
        }
    </script>
