@@ -65,19 +65,33 @@
                <input type="number" id="purchasePrice" oninput="updateFromPurchasePrice()">
            </div>
        </div>
-       <div class="row">
-           <div class="field">
-               <label>Margin</label>
-               <div class="input-wrapper">
-                   <span>€</span>
-                   <input type="number" id="profitAmount" oninput="updateFromProfitAmount()">
-               </div>
+       <div class="field">
+           <label>Discount</label>
+           <div class="input-wrapper">
+               <span>%</span>
+               <input type="number" id="discount" oninput="updateFromDiscount()" disabled>
            </div>
+       </div>
+       <div class="field">
+           <label>Discounted Price</label>
+           <div class="input-wrapper">
+               <span>€</span>
+               <input type="number" id="discountedPrice" readonly>
+           </div>
+       </div>
+       <div class="row">
            <div class="field">
                <label>Margin</label>
                <div class="input-wrapper">
                    <span>%</span>
                    <input type="number" id="profitMargin" oninput="updateFromProfitMargin()">
+               </div>
+           </div>
+           <div class="field">
+               <label>Margin</label>
+               <div class="input-wrapper">
+                   <span>€</span>
+                   <input type="number" id="profitAmount" oninput="updateFromProfitAmount()">
                </div>
            </div>
        </div>
@@ -95,20 +109,6 @@
                    <span>€</span>
                    <input type="number" id="sellPriceIncl" oninput="updateFromSellPrice()">
                </div>
-           </div>
-       </div>
-       <div class="field">
-           <label>Discount</label>
-           <div class="input-wrapper">
-               <span>%</span>
-               <input type="number" id="discount" oninput="updateFromDiscount()" disabled>
-           </div>
-       </div>
-       <div class="field">
-           <label>Discounted Price</label>
-           <div class="input-wrapper">
-               <span>€</span>
-               <input type="number" id="discountedPrice" readonly>
            </div>
        </div>
    </div>
