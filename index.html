@@ -6,7 +6,7 @@
    <title>Calculator</title>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <style>
-       /* Zorg ervoor dat de pagina altijd minstens de volledige hoogte van het scherm beslaat */
+       /* Zorg ervoor dat de hele pagina de volledige hoogte van het scherm beslaat */
        html, body {
            height: 100%;
            margin: 0;
@@ -17,19 +17,21 @@
            background-color: #f4f4f4;
            display: flex;
            justify-content: center;
-           align-items: flex-start; /* Zorg ervoor dat de container aan de bovenkant blijft */
-           padding: 40px 0;
-           overflow: auto;
+           align-items: flex-start; /* De container wordt aan de bovenkant uitgelijnd */
+           padding: 20px;
+           box-sizing: border-box;
+           overflow: hidden; /* Voorkomt extra scrollbalken op de body */
        }
        .content {
            display: flex;
+           flex-direction: column;
            justify-content: center;
            width: 100%;
-           flex-direction: column;
-           align-items: center;
-           padding: 0 20px;
-           height: 100%;
-           overflow: auto;
+           max-width: 500px;
+           margin: 0 auto;
+           padding: 20px 0;
+           overflow-y: auto;
+           min-height: 100%; /* De container neemt altijd minstens 100% van de schermhoogte in */
        }
        .container {
            text-align: center;
@@ -38,12 +40,12 @@
            border-radius: 8px;
            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
            width: 100%;
-           max-width: 500px;
+           margin-top: 10vh; /* Plaats de container iets van de bovenkant */
+           margin-bottom: 10vh; /* Plaats de container ook van de onderkant */
            display: flex;
            flex-direction: column;
+           gap: 15px;
            justify-content: space-between;
-           min-height: 400px; /* Zorg ervoor dat de container altijd een minimale hoogte heeft */
-           margin: 30px 0; /* Zorg ervoor dat er zowel boven als onder marge is */
        }
        .columns {
            display: flex;
@@ -133,7 +135,7 @@
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
            if (purchasePrice <= 0 || sellingPrice <= 0) {
-               document.getElementById('resultMargin').innerText = "Invalid input";
+               document.getElementById('resultMargin').innerText = "Calculation not possible";
                return;
            }
            const sellingPriceExclVAT = sellingPrice / 1.21;
