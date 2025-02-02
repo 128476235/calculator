@@ -76,6 +76,7 @@
            document.getElementById('sellPriceIncl').value = "";
            document.getElementById('profitMargin').value = "";
            document.getElementById('profitAmount').value = "";
+           document.getElementById('sellingPrice').value = "";
        }
 
        function calculateValues() {
@@ -84,24 +85,34 @@
            const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
            const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
 
-           if (purchasePrice > 0 && sellingPrice > 0) {
+           if (purchasePrice <= 0) return;
+
+           if (sellingPrice > 0) {
                const sellingPriceExcl = sellingPrice / 1.21;
                document.getElementById('profitMargin').value = ((sellingPriceExcl - purchasePrice) / sellingPriceExcl * 100).toFixed(2);
                document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
                document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = '€' + sellingPrice.toFixed(2);
-           } else if (purchasePrice > 0 && profitMargin > 0) {
+               return;
+           }
+
+           if (profitMargin > 0) {
                const sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
                const sellingPriceIncl = sellingPriceExcl * 1.21;
                document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = '€' + sellingPriceIncl.toFixed(2);
                document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
-           } else if (purchasePrice > 0 && profitAmount > 0) {
+               document.getElementById('sellingPrice').value = sellingPriceIncl.toFixed(2);
+               return;
+           }
+
+           if (profitAmount > 0) {
                const sellingPriceExcl = purchasePrice + profitAmount;
                const sellingPriceIncl = sellingPriceExcl * 1.21;
                document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = '€' + sellingPriceIncl.toFixed(2);
                document.getElementById('profitMargin').value = ((profitAmount / sellingPriceExcl) * 100).toFixed(2);
+               document.getElementById('sellingPrice').value = sellingPriceIncl.toFixed(2);
            }
        }
    </script>
