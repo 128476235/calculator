@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
    <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
    <title>Calculator</title>
 
    <!-- Favicon en App Icon -->
@@ -12,73 +12,60 @@
    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
    <meta name="apple-mobile-web-app-title" content="Calculator">
    <meta name="theme-color" content="#ffffff">
-   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-   <link rel="shortcut icon" href="/favicon.ico">
 
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <style>
-       html, body {
-           height: 100vh;
+       * {
            margin: 0;
            padding: 0;
-           overflow-x: hidden;
-           overflow-y: auto; /* Scroll alleen als nodig */
+           box-sizing: border-box;
+       }
+
+       html, body {
+           width: 100%;
+           height: 100%;
+           overflow: hidden; /* Voorkomt scrollen */
            background-color: #f4f4f4;
            font-family: 'Poppins', sans-serif;
            display: flex;
            flex-direction: column;
            align-items: center;
-           padding: 20px;
-           box-sizing: border-box;
-           -webkit-overflow-scrolling: touch; /* Soepel scrollen op iOS */
+           justify-content: center;
+           -webkit-overflow-scrolling: touch;
+           touch-action: manipulation;
        }
 
-       /* Verbergt de scrollbar in Safari en Chrome */
+       /* Verwijdert de scrollbar in Safari en Chrome */
        ::-webkit-scrollbar {
            display: none;
        }
 
-       .content {
-           display: flex;
-           flex-direction: column;
-           justify-content: center;
-           width: 100%;
-           max-width: 500px;
-           margin: 0 auto;
-           padding: 10px 0;
-           min-height: 100vh; /* Voorkomt dat de container te klein wordt */
-           box-sizing: border-box;
-       }
-
        .container {
-           text-align: center;
+           width: 90%;
+           max-width: 400px;
            background: white;
-           padding: 30px;
+           padding: 20px;
            border-radius: 8px;
-           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-           width: 100%;
-           margin-top: 5vh;
-           margin-bottom: 5vh;
+           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
            display: flex;
            flex-direction: column;
-           gap: 15px;
            justify-content: space-between;
-           box-sizing: border-box;
+           gap: 10px;
+           height: 90vh; /* Zorgt ervoor dat alles zichtbaar blijft */
        }
 
        .columns {
+           flex: 1;
            display: flex;
            flex-direction: column;
-           gap: 15px;
-           width: 100%;
+           justify-content: center;
+           gap: 10px;
        }
 
        label {
            font-weight: 500;
            display: block;
            text-align: left;
-           margin-bottom: 8px;
        }
 
        input {
@@ -86,12 +73,12 @@
            padding: 12px;
            border: 1px solid #ccc;
            border-radius: 5px;
-           box-sizing: border-box;
            font-size: 16px;
            -moz-appearance: textfield;
+           text-align: center;
        }
 
-       /* Verwijdert pijltjes voor Chrome en Edge */
+       /* Verwijdert pijltjes voor getallen op mobiel */
        input::-webkit-outer-spin-button,
        input::-webkit-inner-spin-button {
            -webkit-appearance: none;
@@ -100,7 +87,7 @@
 
        button {
            width: 100%;
-           padding: 14px;
+           padding: 12px;
            background-color: #1E4E8C;
            color: white;
            border: none;
@@ -108,8 +95,8 @@
            font-weight: bold;
            border-radius: 5px;
            font-size: 16px;
-           margin-top: 15px;
            transition: background-color 0.3s ease;
+           touch-action: manipulation;
        }
 
        button:hover {
@@ -117,46 +104,46 @@
        }
 
        .result {
-           margin-top: 15px;
+           margin-top: 10px;
            font-weight: 500;
            color: #333;
+           text-align: center;
        }
 
        .separator {
            border-top: 2px solid #888;
-           margin-top: 20px;
-           padding-top: 15px;
+           margin-top: 15px;
+           padding-top: 10px;
        }
    </style>
 </head>
 <body>
-   <div class="content">
-       <div class="container">
-           <div class="columns">
-               <div>
-                   <label>Purchase Price (excl.)</label>
-                   <input type="number" id="purchasePrice" placeholder="" oninput="clearError('resultMargin')">
-                   <label>Selling Price (incl.)</label>
-                   <input type="number" id="sellingPrice" placeholder="" oninput="clearError('resultMargin')">
-                   <button onclick="calculateMargin()">Calculate Margin</button>
-                   <div id="resultMargin" class="result"></div>
-               </div>
-               <div>
-                   <label>Margin (%)</label>
-                   <input type="text" id="profitMargin" placeholder="" readonly>
-                   <label>Margin (€)</label>
-                   <input type="text" id="profitAmount" placeholder="" readonly>
-                   <div class="separator"></div>
-               </div>
-               <div>
-                   <label>Desired Margin (%)</label>
-                   <input type="number" id="profitMarginCalc" placeholder="" oninput="clearError('resultSellingPrice')">
-                   <button onclick="calculateSellingPrice()">Calculate Price</button>
-                   <div id="resultSellingPrice" class="result"></div>
-               </div>
+   <div class="container">
+       <div class="columns">
+           <div>
+               <label>Purchase Price (excl.)</label>
+               <input type="number" id="purchasePrice" oninput="clearError('resultMargin')">
+               <label>Selling Price (incl.)</label>
+               <input type="number" id="sellingPrice" oninput="clearError('resultMargin')">
+               <button onclick="calculateMargin()">Calculate Margin</button>
+               <div id="resultMargin" class="result"></div>
+           </div>
+           <div>
+               <label>Margin (%)</label>
+               <input type="text" id="profitMargin" readonly>
+               <label>Margin (€)</label>
+               <input type="text" id="profitAmount" readonly>
+               <div class="separator"></div>
+           </div>
+           <div>
+               <label>Desired Margin (%)</label>
+               <input type="number" id="profitMarginCalc" oninput="clearError('resultSellingPrice')">
+               <button onclick="calculateSellingPrice()">Calculate Price</button>
+               <div id="resultSellingPrice" class="result"></div>
            </div>
        </div>
    </div>
+
    <script>
        function clearError(resultId) {
            document.getElementById(resultId).innerText = "";
