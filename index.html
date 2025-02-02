@@ -26,9 +26,8 @@
        }
        .reset-btn {
            position: absolute;
-           top: 5px;
-           left: 50%;
-           transform: translateX(-50%);
+           top: 10px;
+           right: 15px;
            background: none;
            border: none;
            cursor: pointer;
@@ -127,11 +126,6 @@
            let marginAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
            let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
 
-           if (sellPriceIncl > 0 && discount > 0) {
-               sellPriceIncl = sellPriceIncl * (1 - discount / 100);
-               document.getElementById('sellPriceIncl').value = sellPriceIncl.toFixed(2);
-           }
-
            if (purchasePrice > 0 && marginPercent > 0) {
                let sellPriceExcl = purchasePrice / (1 - marginPercent / 100);
                document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
@@ -144,6 +138,12 @@
                document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = (sellPriceExcl * 1.21).toFixed(2);
                document.getElementById('profitMargin').value = ((marginAmount / sellPriceExcl) * 100).toFixed(2);
+           }
+
+           if (sellPriceIncl > 0 && discount > 0) {
+               sellPriceIncl = sellPriceIncl * (1 - discount / 100);
+               document.getElementById('sellPriceIncl').value = sellPriceIncl.toFixed(2);
+               document.getElementById('sellPriceExcl').value = (sellPriceIncl / 1.21).toFixed(2);
            }
        }
 
