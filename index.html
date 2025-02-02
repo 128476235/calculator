@@ -107,13 +107,20 @@
    </div>
 
    <script>
+       let originalSellPrice = 0;
+
        function updateFromDiscount() {
            const discount = parseFloat(document.getElementById('discount').value) || 0;
-           const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
+           let sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
            
-           if (sellingPriceIncl > 0 && discount > 0 && discount <= 100) {
-               const discountedPrice = sellingPriceIncl * (1 - (discount / 100));
-               document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
+           if (sellingPriceIncl > 0) {
+               if (discount > 0 && discount <= 100) {
+                   originalSellPrice = sellingPriceIncl;
+                   const discountedPrice = sellingPriceIncl * (1 - (discount / 100));
+                   document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
+               } else {
+                   document.getElementById('sellPriceIncl').value = originalSellPrice.toFixed(2);
+               }
                updateFromSellPrice();
            }
        }
