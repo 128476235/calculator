@@ -28,12 +28,6 @@
            width: 100%; padding: 12px; border: 1px solid #ccc;
            border-radius: 5px; font-size: 16px; text-align: left;
        }
-       button {
-           width: 100%; padding: 14px; background-color: #1E4E8C;
-           color: white; border: none; cursor: pointer; font-weight: bold;
-           border-radius: 5px; font-size: 16px;
-           transition: background-color 0.3s ease; margin-top: 12px;
-       }
        .row { display: flex; gap: 12px; }
        .row input { text-align: center; }
    </style>
@@ -42,18 +36,18 @@
    <div class="container">
        <div>
            <label>Purchase Price (excl.)</label>
-           <input type="number" id="purchasePrice">
+           <input type="number" id="purchasePrice" oninput="calculateValues()">
            <label>Selling Price (incl.)</label>
-           <input type="number" id="sellingPrice" oninput="updatePricesFromSellingPrice()">
+           <input type="number" id="sellingPrice" oninput="calculateValues()">
        </div>
        <div class="row">
            <div class="field">
                <label>Margin (%)</label>
-               <input type="number" id="profitMargin" oninput="updateSellingPriceFromMargin()">
+               <input type="number" id="profitMargin" oninput="calculateValues()">
            </div>
            <div class="field">
                <label>Margin (€)</label>
-               <input type="number" id="profitAmount" oninput="updateSellingPriceFromProfit()">
+               <input type="number" id="profitAmount" oninput="calculateValues()">
            </div>
        </div>
        <div class="row">
@@ -66,13 +60,15 @@
                <input type="text" id="sellPriceIncl" readonly>
            </div>
        </div>
-       <button onclick="calculateValues()">Calculate</button>
    </div>
 
    <script>
        function calculateValues() {
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
+           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           
            if (purchasePrice > 0 && sellingPrice > 0) {
                const sellingPriceExcl = sellingPrice / 1.21;
                document.getElementById('profitMargin').value = ((sellingPriceExcl - purchasePrice) / sellingPriceExcl * 100).toFixed(2);
@@ -80,29 +76,15 @@
                document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = '€' + sellingPrice.toFixed(2);
            }
-       }
-       function updateSellingPriceFromMargin() {
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+           
            if (purchasePrice > 0 && profitMargin > 0) {
                const sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
                document.getElementById('sellingPrice').value = (sellingPriceExcl * 1.21).toFixed(2);
            }
-       }
-       function updateSellingPriceFromProfit() {
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           
            if (purchasePrice > 0 && profitAmount > 0) {
                const sellingPriceExcl = purchasePrice + profitAmount;
                document.getElementById('sellingPrice').value = (sellingPriceExcl * 1.21).toFixed(2);
-           }
-       }
-       function updatePricesFromSellingPrice() {
-           const sellingPrice = parseFloat(document.getElementById('sellingPrice').value) || 0;
-           if (sellingPrice > 0) {
-               const sellingPriceExcl = sellingPrice / 1.21;
-               document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = '€' + sellingPrice.toFixed(2);
            }
        }
    </script>
