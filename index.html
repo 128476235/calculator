@@ -27,7 +27,7 @@
        .reset-btn {
            position: absolute;
            top: 10px;
-           right: 15px;
+           right: 10px;
            background: none;
            border: none;
            cursor: pointer;
@@ -56,6 +56,9 @@
        input::-webkit-inner-spin-button {
            -webkit-appearance: none;
            margin: 0;
+       }
+       input:focus {
+           outline: 2px solid #1E4E8C;
        }
        button {
            width: 100%; padding: 12px; background-color: #1E4E8C;
@@ -126,24 +129,19 @@
            let marginAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
            let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
 
-           if (purchasePrice > 0 && marginPercent > 0) {
-               let sellPriceExcl = purchasePrice / (1 - marginPercent / 100);
+           if (purchasePrice > 0 && sellPriceIncl > 0) {
+               let sellPriceExcl = sellPriceIncl / 1.21;
+               let profitAmount = sellPriceExcl - purchasePrice;
+               let profitMargin = (profitAmount / sellPriceExcl) * 100;
                document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = (sellPriceExcl * 1.21).toFixed(2);
-               document.getElementById('profitAmount').value = (sellPriceExcl - purchasePrice).toFixed(2);
-           }
-
-           if (purchasePrice > 0 && marginAmount > 0) {
-               let sellPriceExcl = purchasePrice + marginAmount;
-               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = (sellPriceExcl * 1.21).toFixed(2);
-               document.getElementById('profitMargin').value = ((marginAmount / sellPriceExcl) * 100).toFixed(2);
+               document.getElementById('profitAmount').value = profitAmount.toFixed(2);
+               document.getElementById('profitMargin').value = profitMargin.toFixed(2);
            }
 
            if (sellPriceIncl > 0 && discount > 0) {
-               sellPriceIncl = sellPriceIncl * (1 - discount / 100);
-               document.getElementById('sellPriceIncl').value = sellPriceIncl.toFixed(2);
-               document.getElementById('sellPriceExcl').value = (sellPriceIncl / 1.21).toFixed(2);
+               let discountedPrice = sellPriceIncl * (1 - discount / 100);
+               document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
+               document.getElementById('sellPriceExcl').value = (discountedPrice / 1.21).toFixed(2);
            }
        }
 
