@@ -37,7 +37,6 @@
            padding: 10px;
        }
 
-       /* Verwijdert de scrollbar in Safari en Chrome */
        ::-webkit-scrollbar {
            display: none;
        }
@@ -51,35 +50,34 @@
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
            display: flex;
            flex-direction: column;
-           gap: 15px;
-           height: 90vh; /* Zorgt dat de container altijd volledig zichtbaar is */
+           gap: 20px; /* Algemene witruimte */
+           height: 90vh;
        }
 
        .columns {
            display: flex;
            flex-direction: column;
-           gap: 12px;
-           flex-grow: 1; /* Zorgt ervoor dat alle velden goed verdeeld worden */
+           gap: 18px; /* Meer witruimte tussen tekst en veld */
+           flex-grow: 1;
        }
 
        label {
            font-weight: 500;
            display: block;
            text-align: left;
-           margin-bottom: 5px;
+           margin-bottom: 6px; /* Extra ruimte tussen tekst en veld */
        }
 
        input {
            width: 100%;
-           padding: 10px;
+           padding: 12px;
            border: 1px solid #ccc;
            border-radius: 5px;
            font-size: 16px;
-           text-align: left; /* Links uitlijnen */
+           text-align: left;
            -moz-appearance: textfield;
        }
 
-       /* Verwijdert pijltjes voor getallen op mobiel */
        input::-webkit-outer-spin-button,
        input::-webkit-inner-spin-button {
            -webkit-appearance: none;
@@ -88,7 +86,7 @@
 
        button {
            width: 100%;
-           padding: 16px; /* Meer witruimte in de knoppen */
+           padding: 16px;
            background-color: #1E4E8C;
            color: white;
            border: none;
@@ -98,6 +96,7 @@
            font-size: 16px;
            transition: background-color 0.3s ease;
            touch-action: manipulation;
+           margin-top: 12px; /* Knoppen losgemaakt van velden */
        }
 
        button:hover {
@@ -105,7 +104,7 @@
        }
 
        .result {
-           margin-top: 8px;
+           margin-top: 10px;
            font-weight: 500;
            color: #333;
            text-align: center;
@@ -113,8 +112,8 @@
 
        .separator {
            border-top: 2px solid #888;
-           margin-top: 15px;
-           padding-top: 10px;
+           margin-top: 10px; /* Minder witruimte boven "Desired Margin" */
+           padding-top: 8px;
        }
    </style>
 </head>
