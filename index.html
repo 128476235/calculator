@@ -47,14 +47,17 @@
            transition: background-color 0.3s ease; margin-top: 10px;
        }
        .row { display: flex; gap: 8px; }
-       .row input { text-align: center; }
+       .row input { text-align: left; }
    </style>
 </head>
 <body>
    <div class="container">
        <div class="field">
            <label>Purchase Price</label>
-           <input type="number" id="purchasePrice" oninput="updateFromPurchasePrice()">
+           <div class="input-wrapper">
+               <span>€</span>
+               <input type="number" id="purchasePrice" oninput="updateFromPurchasePrice()">
+           </div>
        </div>
        <div class="row">
            <div class="field">
@@ -75,11 +78,17 @@
        <div class="row">
            <div class="field">
                <label>Net Price</label>
-               <input type="number" id="sellPriceExcl" readonly>
+               <div class="input-wrapper">
+                   <span>€</span>
+                   <input type="number" id="sellPriceExcl" readonly>
+               </div>
            </div>
            <div class="field">
                <label>Sell Price</label>
-               <input type="number" id="sellPriceIncl" oninput="updateFromSellPrice()">
+               <div class="input-wrapper">
+                   <span>€</span>
+                   <input type="number" id="sellPriceIncl" oninput="updateFromSellPrice()">
+               </div>
            </div>
        </div>
    </div>
@@ -127,6 +136,21 @@
                document.getElementById('profitMargin').value = profitMargin.toFixed(2);
                document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
                document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
+           }
+       }
+
+       function updateFromSellPrice() {
+           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
+           
+           if (purchasePrice > 0 && sellingPriceIncl > 0) {
+               const sellingPriceExcl = sellingPriceIncl / 1.21;
+               const profitAmount = sellingPriceExcl - purchasePrice;
+               const profitMargin = (profitAmount / sellingPriceExcl) * 100;
+               
+               document.getElementById('profitAmount').value = profitAmount.toFixed(2);
+               document.getElementById('profitMargin').value = profitMargin.toFixed(2);
+               document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
            }
        }
    </script>
