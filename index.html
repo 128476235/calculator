@@ -75,6 +75,13 @@
                </div>
            </div>
        </div>
+       <div class="field">
+           <label>Discount</label>
+           <div class="input-wrapper">
+               <input type="number" id="discountPercentage" oninput="updateFromDiscount()">
+               <span style="right: 10px; left: auto;">%</span>
+           </div>
+       </div>
        <div class="row">
            <div class="field">
                <label>Net Price</label>
@@ -94,48 +101,14 @@
    </div>
 
    <script>
-       function updateFromPurchasePrice() {
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+       function updateFromDiscount() {
+           const discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
+           const originalSellPrice = parseFloat(document.getElementById('sellPriceIncl').dataset.original) || 0;
 
-           if (purchasePrice > 0 && profitMargin > 0) {
-               const sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
-               const sellingPriceIncl = sellingPriceExcl * 1.21;
-               const profitAmount = sellingPriceExcl - purchasePrice;
-               
-               document.getElementById('profitAmount').value = profitAmount.toFixed(2);
-               document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
-           }
-       }
-
-       function updateFromProfitMargin() {
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
-
-           if (purchasePrice > 0 && profitMargin > 0) {
-               const sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
-               const sellingPriceIncl = sellingPriceExcl * 1.21;
-               const profitAmount = sellingPriceExcl - purchasePrice;
-               
-               document.getElementById('profitAmount').value = profitAmount.toFixed(2);
-               document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
-           }
-       }
-
-       function updateFromProfitAmount() {
-           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-
-           if (purchasePrice > 0 && profitAmount > 0) {
-               const sellingPriceExcl = purchasePrice + profitAmount;
-               const sellingPriceIncl = sellingPriceExcl * 1.21;
-               const profitMargin = (profitAmount / sellingPriceExcl) * 100;
-               
-               document.getElementById('profitMargin').value = profitMargin.toFixed(2);
-               document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
-               document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
+           if (originalSellPrice > 0) {
+               const discountedPrice = originalSellPrice * (1 - discountPercentage / 100);
+               document.getElementById('sellPriceIncl').value = discountedPrice.toFixed(2);
+               updateFromSellPrice();
            }
        }
 
@@ -144,6 +117,7 @@
            const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
            
            if (purchasePrice > 0 && sellingPriceIncl > 0) {
+               document.getElementById('sellPriceIncl').dataset.original = sellingPriceIncl;
                const sellingPriceExcl = sellingPriceIncl / 1.21;
                const profitAmount = sellingPriceExcl - purchasePrice;
                const profitMargin = (profitAmount / sellingPriceExcl) * 100;
