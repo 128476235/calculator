@@ -5,7 +5,12 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
    <meta name="apple-mobile-web-app-capable" content="yes">
    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-   <title>Calculator</title>
+   <title>Simple Calculator</title>
+   <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+   <link rel="manifest" href="site.webmanifest">
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -94,9 +99,9 @@
    <script>
        function calculateValues() {
            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
-           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-           const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
+           let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+           let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           let sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
            
            if (purchasePrice <= 0) return;
            
@@ -104,17 +109,22 @@
            
            if (profitMargin > 0) {
                sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
-               document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
+               sellingPriceIncl = sellingPriceExcl * 1.21;
+               profitAmount = sellingPriceExcl - purchasePrice;
            } else if (profitAmount > 0) {
                sellingPriceExcl = purchasePrice + profitAmount;
-               document.getElementById('profitMargin').value = ((profitAmount / sellingPriceExcl) * 100).toFixed(2);
+               sellingPriceIncl = sellingPriceExcl * 1.21;
+               profitMargin = (profitAmount / sellingPriceExcl) * 100;
            } else if (sellingPriceIncl > 0) {
                sellingPriceExcl = sellingPriceIncl / 1.21;
-               document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
-               document.getElementById('profitMargin').value = ((sellingPriceExcl - purchasePrice) / sellingPriceExcl * 100).toFixed(2);
+               profitAmount = sellingPriceExcl - purchasePrice;
+               profitMargin = ((sellingPriceExcl - purchasePrice) / sellingPriceExcl) * 100;
            }
            
            document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
+           document.getElementById('sellPriceIncl').value = sellingPriceIncl.toFixed(2);
+           document.getElementById('profitAmount').value = profitAmount.toFixed(2);
+           document.getElementById('profitMargin').value = profitMargin.toFixed(2);
        }
    </script>
 </body>
