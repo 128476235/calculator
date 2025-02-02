@@ -98,5 +98,32 @@
            </div>
        </div>
    </div>
+
+   <script>
+       function updateFromSellPrice() {
+           const sellingPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
+           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           
+           if (sellingPriceIncl > 0) {
+               const sellingPriceExcl = sellingPriceIncl / 1.21;
+               document.getElementById('sellPriceExcl').value = sellingPriceExcl.toFixed(2);
+               
+               if (purchasePrice > 0) {
+                   const profitAmount = sellingPriceExcl - purchasePrice;
+                   const profitMargin = (profitAmount / sellingPriceExcl) * 100;
+                   
+                   if (profitMargin <= 100) {
+                       document.getElementById('profitAmount').value = profitAmount.toFixed(2);
+                       document.getElementById('profitMargin').value = profitMargin.toFixed(2);
+                   } else {
+                       document.getElementById('profitAmount').value = "";
+                       document.getElementById('profitMargin').value = "";
+                   }
+               }
+           } else {
+               document.getElementById('sellPriceExcl').value = "";
+           }
+       }
+   </script>
 </body>
 </html>
