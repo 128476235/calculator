@@ -3,108 +3,114 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-   <title>Calculator</title>
+   <title>Simple Calculator</title>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
-       body {
+       html, body {
+           width: 100%; height: 100%; overflow: hidden;
+           background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
            display: flex; align-items: center; justify-content: center;
-           height: 100vh; background-color: #f4f4f4;
-           font-family: 'Poppins', sans-serif;
+           padding: 2vw;
        }
        .container {
-           width: 100%; max-width: 380px; background: white;
+           width: 100%; max-width: 350px; background: white;
            padding: 15px; border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
            display: flex; flex-direction: column; gap: 12px;
+           justify-content: center;
        }
-       .field { display: flex; flex-direction: column; gap: 4px; }
-       label { font-weight: 500; }
-       .input-wrapper {
-           display: flex; position: relative;
+       .field { display: flex; flex-direction: column; gap: 4px; position: relative; }
+       label { font-weight: 500; text-align: left; }
+       .input-container {
+           display: flex;
+           align-items: center;
+           position: relative;
        }
-       .input-wrapper span {
-           position: absolute; left: 10px; font-weight: bold;
+       .input-container span {
+           position: absolute;
+           left: 10px;
+           font-size: 14px;
+           color: #333;
+           font-weight: bold;
        }
-       input {
-           width: 100%; padding: 10px 10px 10px 30px;
-           border: 1px solid #ccc; border-radius: 5px;
+       .input-container input {
+           width: 100%; padding: 10px 10px 10px 25px;
+           border: 1px solid #ccc;
+           border-radius: 5px; font-size: 14px; text-align: left;
        }
        .row { display: flex; gap: 8px; }
+       button {
+           width: 100%; padding: 12px; background-color: #1E4E8C;
+           color: white; border: none; cursor: pointer; font-weight: bold;
+           border-radius: 5px; font-size: 14px;
+           transition: background-color 0.3s ease; margin-top: 10px;
+       }
    </style>
 </head>
 <body>
    <div class="container">
        <div class="field">
-           <label>Purchase Price (€)</label>
-           <input type="number" id="purchasePrice" oninput="calculate()">
+           <label>Purchase Price</label>
+           <div class="input-container">
+               <span>€</span>
+               <input type="number" id="purchasePrice" oninput="clearResults()">
+           </div>
+       </div>
+       <div class="row">
+           <div class="field">
+               <label>Margin</label>
+               <div class="input-container">
+                   <span>€</span>
+                   <input type="number" id="profitAmount" oninput="clearResults()">
+               </div>
+           </div>
+           <div class="field">
+               <label>Margin</label>
+               <div class="input-container">
+                   <span>%</span>
+                   <input type="number" id="profitMargin" oninput="clearResults()">
+               </div>
+           </div>
        </div>
        <div class="field">
-           <label>Discount (%)</label>
-           <input type="number" id="discount" oninput="calculate()">
+           <label>Net Price</label>
+           <input type="text" id="sellPriceExcl" readonly>
        </div>
-       <div class="row">
-           <div class="field">
-               <label>Margin (€)</label>
-               <input type="number" id="profitAmount" oninput="calculate()">
-           </div>
-           <div class="field">
-               <label>Margin (%)</label>
-               <input type="number" id="profitMargin" oninput="calculate()">
-           </div>
+       <div class="field">
+           <label>Selling Price</label>
+           <input type="text" id="sellPriceIncl" readonly>
        </div>
-       <div class="row">
-           <div class="field">
-               <label>Net Price (€)</label>
-               <input type="number" id="sellPriceExcl" readonly>
-           </div>
-           <div class="field">
-               <label>Sell Price (€)</label>
-               <input type="number" id="sellPriceIncl" oninput="updateSellPrice()">
-           </div>
-       </div>
+       <button onclick="calculateValues()">Calculate</button>
    </div>
 
    <script>
-       function calculate() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           let discount = parseFloat(document.getElementById('discount').value) || 0;
-           let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
-           let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-
-           let discountedPrice = discount > 0 ? purchasePrice * (1 - discount / 100) : purchasePrice;
-           let sellPriceExcl = discountedPrice * (1 + profitMargin / 100);
-           let finalSellPriceIncl = sellPriceExcl * 1.21;
-
-           if (!document.getElementById('sellPriceIncl').dataset.manual) {
-               document.getElementById('sellPriceIncl').value = finalSellPriceIncl.toFixed(2);
-               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
-           }
-
-           if (profitMargin > 0) {
-               document.getElementById('profitAmount').value = (sellPriceExcl - discountedPrice).toFixed(2);
-           }
-           if (profitAmount > 0) {
-               sellPriceExcl = discountedPrice + profitAmount;
-               finalSellPriceIncl = sellPriceExcl * 1.21;
-               document.getElementById('profitMargin').value = ((profitAmount / sellPriceExcl) * 100).toFixed(2);
-           }
+       function clearResults() {
+           document.getElementById('sellPriceExcl').value = "";
+           document.getElementById('sellPriceIncl').value = "";
        }
 
-       function updateSellPrice() {
-           let sellPriceIncl = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-
-           if (sellPriceIncl > 0) {
-               document.getElementById('sellPriceIncl').dataset.manual = true;
-               let sellPriceExcl = sellPriceIncl / 1.21;
-               let profitAmount = sellPriceExcl - purchasePrice;
-               let profitMargin = (profitAmount / sellPriceExcl) * 100;
-
-               document.getElementById('sellPriceExcl').value = sellPriceExcl.toFixed(2);
-               document.getElementById('profitAmount').value = profitAmount.toFixed(2);
-               document.getElementById('profitMargin').value = profitMargin.toFixed(2);
+       function calculateValues() {
+           const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+           const profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           
+           if (purchasePrice <= 0) return;
+           
+           let sellingPriceExcl = 0;
+           let sellingPriceIncl = 0;
+           
+           if (profitMargin > 0) {
+               sellingPriceExcl = purchasePrice / (1 - (profitMargin / 100));
+               document.getElementById('profitAmount').value = (sellingPriceExcl - purchasePrice).toFixed(2);
+           } else if (profitAmount > 0) {
+               sellingPriceExcl = purchasePrice + profitAmount;
+               document.getElementById('profitMargin').value = ((profitAmount / sellingPriceExcl) * 100).toFixed(2);
            }
+           
+           sellingPriceIncl = sellingPriceExcl * 1.21;
+           document.getElementById('sellPriceExcl').value = '€' + sellingPriceExcl.toFixed(2);
+           document.getElementById('sellPriceIncl').value = '€' + sellingPriceIncl.toFixed(2);
        }
    </script>
 </body>
