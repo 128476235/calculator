@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
@@ -18,14 +18,24 @@
            width: 100%; height: 100%; overflow-y: scroll;
            background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
            display: flex; align-items: center; justify-content: center;
-           padding: 2vw;
+           padding: 0;
            margin-top: 0; /* Fix for Safari viewport bug */
        }
-       .container {
-           width: 100%; max-width: 420px; background: white;
-           padding: 15px; border-radius: 8px;
+       body {
+           min-height: 100vh; /* Ensures the page takes up full height */
+       }
+       .full-screen {
+           width: 100%; 
+           max-width: 420px; 
+           background: white;
+           padding: 15px; 
+           border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 12px;
+           display: flex; 
+           flex-direction: column; 
+           gap: 12px;
+           height: 100%;
+           overflow-y: auto; /* Allow scrolling on mobile */
        }
        .field { display: flex; flex-direction: column; gap: 4px; }
        label { font-weight: 500; text-align: left; }
@@ -106,7 +116,7 @@
    </style>
 </head>
 <body>
-   <div class="container">
+   <div class="full-screen">
        <div class="field">
            <label>Purchase Price</label>
            <div class="input-group">
@@ -155,14 +165,14 @@
                </div>
            </div>
            <div class="field">
-               <label>Discount price</label>
+               <label>Discount Price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="sellPriceWithDiscount" min="0" readonly>
+                   <input type="number" id="discountPrice" min="0" oninput="calculateDiscountPrice()">
                </div>
            </div>
        </div>
-       <button type="button" id="copyToSellPrice" onclick="copyToSellingPrice()">Apply discount</button>
+       <button type="button" id="applyDiscount" onclick="applyDiscount()">Apply discount</button>
    </div>
 
    <script>
@@ -269,17 +279,22 @@
            }
        }
 
-       function copyToSellingPrice() {
-           let sellPriceWithDiscount = document.getElementById('sellPriceWithDiscount').value;
-           document.getElementById('sellPrice').value = sellPriceWithDiscount;
+       function calculateDiscountPrice() {
+           let discountPrice = parseFloat(document.getElementById('discountPrice').value) || 0;
+           let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
 
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('sellPriceWithDiscount').value = '';
+           if (discountPrice > 0 && discountPercentage >= 0) {
+               let newSellingPrice = discountPrice + (discountPrice * discountPercentage / 100);
+               document.getElementById('sellPrice').value = roundDown(newSellingPrice);
+           }
+       }
+
+       function applyDiscount() {
+           let discountPrice = document.getElementById('discountPrice').value;
+           document.getElementById('sellPrice').value = discountPrice;
 
            calculate();
        }
    </script>
 </body>
 </html>
-
-
