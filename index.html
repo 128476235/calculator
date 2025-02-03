@@ -75,7 +75,7 @@
        }
        button {
            padding: 10px 15px;
-           background-color: #007bff;
+           background-color: #bbb; /* Default gray */
            color: white;
            border: none;
            cursor: pointer;
@@ -85,8 +85,11 @@
            margin-top: 12px;
            font-weight: 700; /* Poppins Bold */
        }
+       button:active {
+           background-color: #333; /* Darker black when clicked */
+       }
        button:hover {
-           background-color: #0056b3;
+           background-color: #999; /* Slightly darker gray when hovering */
        }
        .input-group {
            margin-bottom: 10px;
@@ -114,7 +117,7 @@
 
            /* Add extra padding to the top of the container for mobile Safari */
            body {
-               padding-top: 10vh; /* Adds extra space on top to avoid the bookmark bar */
+               padding-top: 5vh; /* Adjust space for Safari's bookmark bar */
            }
 
            /* Ensure that "Excl. vat price" and all other fields are stacked */
@@ -177,7 +180,7 @@
                <label>Discount price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="sellPriceWithDiscount" min="0" readonly>
+                   <input type="number" id="discountPrice" min="0" oninput="calculateDiscountPrice()">
                </div>
            </div>
        </div>
@@ -290,6 +293,17 @@
                let discountAmount = (sellingPrice * discountPercentage) / 100;
                let newSellingPrice = sellingPrice - discountAmount;
                document.getElementById('sellPriceWithDiscount').value = roundDown(newSellingPrice);
+           }
+       }
+
+       function calculateDiscountPrice() {
+           let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
+           let discountPrice = parseFloat(document.getElementById('discountPrice').value) || 0;
+
+           // Calculate the discount percentage based on the discount price
+           if (sellingPrice > 0 && discountPrice > 0) {
+               let discountPercentage = ((sellingPrice - discountPrice) / sellingPrice) * 100;
+               document.getElementById('discountPercentage').value = roundDown(discountPercentage);
            }
        }
 
