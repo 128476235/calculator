@@ -96,8 +96,8 @@
    </div>
 
    <script>
-       function formatNumber(value) {
-           return isNaN(value) ? "" : parseFloat(value).toFixed(2);
+       function roundDown(value) {
+           return isNaN(value) ? "" : Math.floor(value);
        }
 
        function calculate() {
@@ -110,23 +110,23 @@
                let netPrice = sellingPrice / 1.21;
                profitAmount = netPrice - purchasePrice;
                profitMargin = (profitAmount / netPrice) * 100;
-               document.getElementById('sellPriceExcl').value = formatNumber(netPrice);
+               document.getElementById('sellPriceExcl').value = roundDown(netPrice);
            } else if (purchasePrice > 0 && profitMargin > 0) {
                let netPrice = purchasePrice / (1 - (profitMargin / 100));
                sellingPrice = netPrice * 1.21;
                profitAmount = netPrice - purchasePrice;
-               document.getElementById('sellPriceIncl').value = formatNumber(sellingPrice);
-               document.getElementById('sellPriceExcl').value = formatNumber(netPrice);
+               document.getElementById('sellPriceIncl').value = roundDown(sellingPrice);
+               document.getElementById('sellPriceExcl').value = roundDown(netPrice);
            } else if (purchasePrice > 0 && profitAmount > 0) {
                let netPrice = purchasePrice + profitAmount;
                sellingPrice = netPrice * 1.21;
                profitMargin = (profitAmount / netPrice) * 100;
-               document.getElementById('sellPriceIncl').value = formatNumber(sellingPrice);
-               document.getElementById('sellPriceExcl').value = formatNumber(netPrice);
+               document.getElementById('sellPriceIncl').value = roundDown(sellingPrice);
+               document.getElementById('sellPriceExcl').value = roundDown(netPrice);
            }
 
-           document.getElementById('profitMargin').value = formatNumber(profitMargin);
-           document.getElementById('profitAmount').value = formatNumber(profitAmount);
+           document.getElementById('profitMargin').value = roundDown(profitMargin);
+           document.getElementById('profitAmount').value = roundDown(profitAmount);
        }
    </script>
 </body>
