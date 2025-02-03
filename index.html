@@ -15,7 +15,7 @@
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
        html, body {
-           width: 100%; height: 100%; overflow: hidden;
+           width: 100%; height: 100%;
            background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
            display: flex; align-items: center; justify-content: center;
            padding: 2vw;
@@ -25,6 +25,7 @@
            padding: 15px; border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
            display: flex; flex-direction: column; gap: 12px;
+           min-height: 90vh; /* Ensure the container fits well without scrolling */
        }
        .field { display: flex; flex-direction: column; gap: 4px; }
        label { font-weight: 500; text-align: left; }
@@ -111,13 +112,19 @@
 
        /* Media query for mobile screens */
        @media (max-width: 768px) {
-           /* Stack elements vertically on mobile */
-           .container {
-               width: 100%;
-               padding: 10px;
+           /* Ensure the container doesn't cause scrolling on mobile */
+           html, body {
+               height: 100%; /* Ensure full height is used */
+               padding: 0;
+               overflow: hidden; /* Disable scrolling */
            }
 
-           /* Ensure that rows stack vertically on mobile */
+           .container {
+               min-height: 90vh; /* Fit the container well on smaller screens */
+               padding: 5px;
+           }
+
+           /* Stack elements vertically on mobile */
            .row, .row-net-price-sell {
                flex-direction: column;
                gap: 10px;
@@ -153,7 +160,7 @@
            <label>Purchase Price</label>
            <div class="input-group">
                <span>€</span>
-               <input type="number" id="purchasePrice" min="0" placeholder="Enter purchase price" oninput="calculate()">
+               <input type="number" id="purchasePrice" min="0" oninput="calculate()">
            </div>
        </div>
        <div class="row-net-price-sell">
@@ -161,14 +168,14 @@
                <label>Excl. vat price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="netPrice" min="0" placeholder="Enter net price" oninput="calculateFromNetPrice()">
+                   <input type="number" id="netPrice" min="0" oninput="calculateFromNetPrice()">
                </div>
            </div>
            <div class="field">
                <label>Selling Price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="sellPrice" min="0" placeholder="Enter selling price" oninput="calculate()">
+                   <input type="number" id="sellPrice" min="0" oninput="calculate()">
                </div>
            </div>
        </div>
@@ -177,14 +184,14 @@
                <label>Margin</label>
                <div class="input-group">
                    <span>%</span>
-                   <input type="number" id="profitMargin" min="0" max="99" placeholder="Enter margin %" oninput="calculateMargin()">
+                   <input type="number" id="profitMargin" min="0" max="99" oninput="calculateMargin()">
                </div>
            </div>
            <div class="field">
                <label>Margin</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="profitAmount" min="0" placeholder="Enter margin amount" oninput="calculateProfitAmount()">
+                   <input type="number" id="profitAmount" min="0" oninput="calculateProfitAmount()">
                </div>
            </div>
        </div>
@@ -193,14 +200,14 @@
                <label>Discount</label>
                <div class="input-group">
                    <span>%</span>
-                   <input type="number" id="discountPercentage" min="0" max="99" placeholder="Enter discount %" oninput="calculateDiscount()">
+                   <input type="number" id="discountPercentage" min="0" max="99" oninput="calculateDiscount()">
                </div>
            </div>
            <div class="field">
                <label>Discount price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="sellPriceWithDiscount" min="0" placeholder="Discounted price" readonly>
+                   <input type="number" id="sellPriceWithDiscount" min="0" readonly>
                </div>
            </div>
        </div>
