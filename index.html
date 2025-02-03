@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
    <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
    <title>Margins</title>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
@@ -15,29 +15,31 @@
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
        html, body {
-           width: 100%; height: 100%; overflow-y: visible; /* Changed overflow to visible */
+           width: 100%; height: 100%;
            background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
            display: flex; align-items: center; justify-content: center;
-           padding: 2vw;
+           padding: 0;
        }
        .container {
            width: 100%; max-width: 420px; background: white;
            padding: 15px; border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
            display: flex; flex-direction: column; gap: 12px;
-           position: relative;
-           top: 0;
+           height: auto; /* Allow scrolling */
+           margin-top: 60px; /* Increased top margin for more white space */
+           margin-bottom: 50px; /* Bottom margin */
+           overflow-y: auto; /* Allow scrolling */
        }
        .field { display: flex; flex-direction: column; gap: 4px; }
        label { font-weight: 500; text-align: left; }
        .row {
            display: flex;
-           flex-wrap: wrap;
+           flex-wrap: wrap; /* Ensures that the fields wrap on mobile */
            gap: 16px;
        }
        .row .field { 
            flex: 1;
-           min-width: 160px;
+           min-width: 160px; /* Ensures that the fields don't shrink too small on mobile */
        }
        .input-group {
            display: flex;
@@ -51,15 +53,15 @@
            padding: 10px;
            font-size: 14px;
            border-right: 1px solid #ccc;
-           font-weight: 500;
+           font-weight: 500; /* Poppins Medium for currency and percentage symbols */
        }
        .input-group input {
            width: 100%; padding: 10px; border: none;
            font-size: 14px; text-align: left;
            border-radius: 0 5px 5px 0;
-           font-weight: 500;
-           outline: none;
+           font-weight: 500; /* Poppins Medium */
        }
+       /* Remove number input arrows */
        input[type="number"]::-webkit-outer-spin-button,
        input[type="number"]::-webkit-inner-spin-button {
            -webkit-appearance: none;
@@ -84,46 +86,93 @@
            border-radius: 5px;
            width: 100%;
            margin-top: 12px;
-           font-weight: 700;
+           font-weight: 700; /* Poppins Bold */
+           transition: all 0.3s ease;
        }
        button:hover {
            background-color: #0056b3;
+       }
+       button:active {
+           background-color: #004085; /* Darken button on press */
        }
        .input-group {
            margin-bottom: 10px;
        }
        .field {
-           width: 100%;
+           width: 100%; /* Purchase Price field will span the full width */
        }
+       /* Move Net Price to the left of Selling Price */
        .row-net-price-sell {
            display: flex;
            flex-direction: row-reverse;
            gap: 16px;
        }
-       /* Mobile-specific styles */
-       @media only screen and (max-width: 768px) {
-           .row {
-               flex-direction: column;
+       /* Custom styles for focus and input feedback */
+       input:focus {
+           border-color: #007bff;
+           outline: none;
+       }
+
+       /* Mobile Fixes */
+       @media (max-width: 768px) {
+           html, body {
+               height: 100%;
+               padding: 0;
+               overflow: hidden;
            }
-           .row .field {
-               width: 100%;
-               min-width: 100%;
-           }
-           body {
-               padding-top: 10vh; /* Adjusted padding for mobile */
-           }
+
            .container {
-               padding-top: 20px; /* Adjusted padding */
-           }
-           .row-net-price-sell {
+               padding: 10px; /* Padding restored for desktop */
+               margin-top: 60px; /* More top margin for mobile */
+               margin-bottom: 50px; /* Keep bottom margin */
+               height: auto; /* Allow content to scroll */
+               display: flex;
                flex-direction: column;
+               justify-content: flex-start;
+           }
+
+           /* Stack elements vertically on mobile */
+           .row, .row-net-price-sell {
+               flex-direction: column;
+               gap: 10px;
+           }
+
+           .field {
+               width: 100%; /* Ensure each field takes up full width */
+           }
+
+           /* Ensure input fields are more spacious on smaller screens */
+           .input-group input {
+               width: 100%;
+               font-size: 16px; /* Increase font size for better readability */
+               padding: 12px;
+           }
+
+           .input-group span {
+               font-size: 16px; /* Increase the size of the currency/percentage symbol */
+               padding: 12px;
+           }
+
+           button {
+               width: 100%;
+               padding: 12px;
+               font-size: 16px;
            }
        }
 
-       /* Ensure good experience on small screen sizes like iPhone SE */
-       @media only screen and (max-width: 480px) {
-           body {
-               padding-top: 0; /* Removed excessive padding for smaller screens */
+       /* Fix for iPhone Mini Safari rendering issue */
+       @media screen and (max-width: 375px) {
+           html, body {
+               height: 100%;
+               padding: 0;
+               overflow: hidden;
+           }
+
+           .container {
+               height: auto; /* Allow container to adjust */
+               margin-top: 60px; /* Increased margin for top whitespace */
+               margin-bottom: 50px;
+               overflow-y: auto;
            }
        }
    </style>
@@ -197,6 +246,7 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
 
+           // Reset Discount and Discounted Price when Selling Price is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -217,6 +267,7 @@
            let netPrice = parseFloat(document.getElementById('netPrice').value) || 0;
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
 
+           // Reset Discount and Discounted Price when Net Price is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -237,6 +288,7 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
 
+           // Reset Discount and Discounted Price when Margin is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -260,6 +312,7 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
 
+           // Reset Discount and Discounted Price when Profit Amount is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -283,6 +336,7 @@
            let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
            let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
 
+           // Reset Discounted Price when Discount is manually adjusted
            document.getElementById('sellPriceWithDiscount').value = '';
 
            if (sellingPrice > 0 && discountPercentage >= 0) {
@@ -293,13 +347,17 @@
        }
 
        function copyToSellingPrice() {
+           // Haal de waarde van Discounted Price
            let sellPriceWithDiscount = document.getElementById('sellPriceWithDiscount').value;
            
+           // Zet de waarde in het Selling Price veld
            document.getElementById('sellPrice').value = sellPriceWithDiscount;
 
+           // Reset Discount and Discounted Price fields
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
+           // Roep de calculate() functie aan om de marges en netprijs te herberekenen
            calculate();
        }
    </script>
