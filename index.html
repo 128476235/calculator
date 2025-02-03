@@ -4,7 +4,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
    <title>Margins</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
    <meta name="apple-mobile-web-app-capable" content="yes">
@@ -83,9 +83,13 @@
            width: 100%;
            margin-top: 12px;
            font-weight: 700; /* Poppins Bold */
+           transition: all 0.3s ease;
        }
        button:hover {
            background-color: #0056b3;
+       }
+       button:active {
+           background-color: #004085; /* Darken button on press */
        }
        .input-group {
            margin-bottom: 10px;
@@ -99,6 +103,48 @@
            flex-direction: row-reverse;
            gap: 16px;
        }
+       /* Custom styles for focus and input feedback */
+       input:focus {
+           border-color: #007bff;
+           outline: none;
+       }
+
+       /* Media query for mobile screens */
+       @media (max-width: 768px) {
+           /* Stack elements vertically on mobile */
+           .container {
+               width: 100%;
+               padding: 10px;
+           }
+
+           /* Ensure that rows stack vertically on mobile */
+           .row, .row-net-price-sell {
+               flex-direction: column;
+               gap: 10px;
+           }
+
+           .field {
+               width: 100%; /* Ensure each field takes up full width */
+           }
+
+           /* Ensure input fields are more spacious on smaller screens */
+           .input-group input {
+               width: 100%;
+               font-size: 16px; /* Increase font size for better readability */
+               padding: 12px;
+           }
+
+           .input-group span {
+               font-size: 16px; /* Increase the size of the currency/percentage symbol */
+               padding: 12px;
+           }
+
+           button {
+               width: 100%;
+               padding: 12px;
+               font-size: 16px;
+           }
+       }
    </style>
 </head>
 <body>
@@ -107,7 +153,7 @@
            <label>Purchase Price</label>
            <div class="input-group">
                <span>€</span>
-               <input type="number" id="purchasePrice" min="0" oninput="calculate()">
+               <input type="number" id="purchasePrice" min="0" placeholder="Enter purchase price" oninput="calculate()">
            </div>
        </div>
        <div class="row-net-price-sell">
@@ -115,14 +161,14 @@
                <label>Excl. vat price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="netPrice" min="0" oninput="calculateFromNetPrice()">
+                   <input type="number" id="netPrice" min="0" placeholder="Enter net price" oninput="calculateFromNetPrice()">
                </div>
            </div>
            <div class="field">
                <label>Selling Price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="sellPrice" min="0" oninput="calculate()">
+                   <input type="number" id="sellPrice" min="0" placeholder="Enter selling price" oninput="calculate()">
                </div>
            </div>
        </div>
@@ -131,14 +177,14 @@
                <label>Margin</label>
                <div class="input-group">
                    <span>%</span>
-                   <input type="number" id="profitMargin" min="0" max="99" oninput="calculateMargin()">
+                   <input type="number" id="profitMargin" min="0" max="99" placeholder="Enter margin %" oninput="calculateMargin()">
                </div>
            </div>
            <div class="field">
                <label>Margin</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="profitAmount" min="0" oninput="calculateProfitAmount()">
+                   <input type="number" id="profitAmount" min="0" placeholder="Enter margin amount" oninput="calculateProfitAmount()">
                </div>
            </div>
        </div>
@@ -147,14 +193,14 @@
                <label>Discount</label>
                <div class="input-group">
                    <span>%</span>
-                   <input type="number" id="discountPercentage" min="0" max="99" oninput="calculateDiscount()">
+                   <input type="number" id="discountPercentage" min="0" max="99" placeholder="Enter discount %" oninput="calculateDiscount()">
                </div>
            </div>
            <div class="field">
                <label>Discount price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="sellPriceWithDiscount" min="0" readonly>
+                   <input type="number" id="sellPriceWithDiscount" min="0" placeholder="Discounted price" readonly>
                </div>
            </div>
        </div>
@@ -287,6 +333,3 @@
    </script>
 </body>
 </html>
-
-
-
