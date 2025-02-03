@@ -58,7 +58,7 @@
            <label>Purchase Price</label>
            <div class="input-group">
                <span>€</span>
-               <input type="text" id="purchasePrice" oninput="calculate()">
+               <input type="number" id="purchasePrice" min="0" oninput="calculate()">
            </div>
        </div>
        <div class="row">
@@ -66,14 +66,14 @@
                <label>Margin (%)</label>
                <div class="input-group">
                    <span>%</span>
-                   <input type="text" id="profitMargin" oninput="calculate()">
+                   <input type="number" id="profitMargin" min="1" max="99" oninput="calculate()">
                </div>
            </div>
            <div class="field">
                <label>Margin (€)</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="text" id="profitAmount" oninput="calculate()">
+                   <input type="number" id="profitAmount" min="0" oninput="calculate()">
                </div>
            </div>
        </div>
@@ -89,7 +89,7 @@
                <label>Selling Price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="text" id="sellPriceIncl" oninput="calculate()">
+                   <input type="number" id="sellPriceIncl" min="0" oninput="calculate()">
                </div>
            </div>
        </div>
@@ -101,23 +101,23 @@
        }
 
        function calculate() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value.replace(',', '.')) || 0;
-           let profitMargin = parseFloat(document.getElementById('profitMargin').value.replace(',', '.')) || 0;
-           let profitAmount = parseFloat(document.getElementById('profitAmount').value.replace(',', '.')) || 0;
-           let sellingPrice = parseFloat(document.getElementById('sellPriceIncl').value.replace(',', '.')) || 0;
+           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+           let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+           let sellingPrice = parseFloat(document.getElementById('sellPriceIncl').value) || 0;
 
            if (purchasePrice > 0 && sellingPrice > 0) {
                let netPrice = sellingPrice / 1.21;
                profitAmount = netPrice - purchasePrice;
                profitMargin = (profitAmount / netPrice) * 100;
                document.getElementById('sellPriceExcl').value = roundDown(netPrice);
-           } else if (purchasePrice > 0 && profitMargin > 0) {
+           } else if (purchasePrice > 0 && profitMargin >= 1 && profitMargin <= 99) {
                let netPrice = purchasePrice / (1 - (profitMargin / 100));
                sellingPrice = netPrice * 1.21;
                profitAmount = netPrice - purchasePrice;
                document.getElementById('sellPriceIncl').value = roundDown(sellingPrice);
                document.getElementById('sellPriceExcl').value = roundDown(netPrice);
-           } else if (purchasePrice > 0 && profitAmount > 0) {
+           } else if (purchasePrice > 0 && profitAmount >= 0) {
                let netPrice = purchasePrice + profitAmount;
                sellingPrice = netPrice * 1.21;
                profitMargin = (profitAmount / netPrice) * 100;
@@ -125,8 +125,8 @@
                document.getElementById('sellPriceExcl').value = roundDown(netPrice);
            }
 
-           document.getElementById('profitMargin').value = roundDown(profitMargin);
-           document.getElementById('profitAmount').value = roundDown(profitAmount);
+           document.getElementById('profitMargin').value = profitMargin > 0 ? Math.min(roundDown(profitMargin), 99) : "";
+           document.getElementById('profitAmount').value = profitAmount >= 0 ? roundDown(profitAmount) : "";
        }
    </script>
 </body>
