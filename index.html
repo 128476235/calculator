@@ -110,18 +110,21 @@
            outline: none;
        }
 
-       /* Media query for mobile screens */
+       /* Mobile Fixes */
        @media (max-width: 768px) {
-           /* Ensure the container doesn't cause scrolling on mobile */
+           /* Ensure the container fits well without scrolling */
            html, body {
-               height: 100%; /* Ensure full height is used */
+               height: 100%;
                padding: 0;
                overflow: hidden; /* Disable scrolling */
            }
 
            .container {
+               padding: 10px; /* Padding restored for desktop */
                min-height: 90vh; /* Fit the container well on smaller screens */
-               padding: 5px;
+               display: flex;
+               flex-direction: column;
+               justify-content: space-between;
            }
 
            /* Stack elements vertically on mobile */
@@ -150,6 +153,19 @@
                width: 100%;
                padding: 12px;
                font-size: 16px;
+           }
+       }
+
+       /* Fix for iPhone Mini Safari rendering issue */
+       @media screen and (max-width: 375px) {
+           html, body {
+               height: 100%;
+               padding: 0;
+               overflow: hidden;
+           }
+
+           .container {
+               min-height: 100vh; /* Ensure container takes up full height */
            }
        }
    </style>
