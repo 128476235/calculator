@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
    <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
    <title>Margins</title>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
@@ -18,24 +18,13 @@
            width: 100%; height: 100%; overflow-y: scroll;
            background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
            display: flex; align-items: center; justify-content: center;
-           padding: 0;
-           margin-top: 0; /* Fix for Safari viewport bug */
+           padding: 2vw;
        }
-       body {
-           min-height: 100vh; /* Ensures the page takes up full height */
-       }
-       .full-screen {
-           width: 100%; 
-           max-width: 420px; 
-           background: white;
-           padding: 15px; 
-           border-radius: 8px;
+       .container {
+           width: 100%; max-width: 420px; background: white;
+           padding: 15px; border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-           display: flex; 
-           flex-direction: column; 
-           gap: 12px;
-           height: 100%;
-           overflow-y: auto; /* Allow scrolling on mobile */
+           display: flex; flex-direction: column; gap: 12px;
        }
        .field { display: flex; flex-direction: column; gap: 4px; }
        label { font-weight: 500; text-align: left; }
@@ -47,14 +36,6 @@
        .row .field { 
            flex: 1;
            min-width: 160px; /* Ensures that the fields don't shrink too small on mobile */
-       }
-       .row-net-price-sell {
-           display: flex;
-           flex-direction: row-reverse;
-           gap: 16px;
-       }
-       .row-net-price-sell .field {
-           flex-direction: column; /* Stack vertically on mobile */
        }
        .input-group {
            display: flex;
@@ -68,13 +49,13 @@
            padding: 10px;
            font-size: 14px;
            border-right: 1px solid #ccc;
-           font-weight: 500;
+           font-weight: 500; /* Poppins Medium for currency and percentage symbols */
        }
        .input-group input {
            width: 100%; padding: 10px; border: none;
            font-size: 14px; text-align: left;
            border-radius: 0 5px 5px 0;
-           font-weight: 500;
+           font-weight: 500; /* Poppins Medium */
            outline: none; /* Remove blue outline when focusing on input fields */
        }
        /* Remove number input arrows */
@@ -102,7 +83,7 @@
            border-radius: 5px;
            width: 100%;
            margin-top: 12px;
-           font-weight: 700;
+           font-weight: 700; /* Poppins Bold */
        }
        button:hover {
            background-color: #0056b3;
@@ -113,10 +94,28 @@
        .field {
            width: 100%; /* Purchase Price field will span the full width */
        }
+       /* Move Net Price to the left of Selling Price */
+       .row-net-price-sell {
+           display: flex;
+           flex-direction: row-reverse;
+           gap: 16px;
+       }
+
+       /* Mobile-specific styles */
+       @media only screen and (max-width: 768px) {
+           .row {
+               flex-direction: column; /* Stack fields vertically on smaller screens */
+           }
+
+           .row .field {
+               width: 100%; /* Ensure fields take up the full width */
+               min-width: 100%; /* Prevent them from shrinking too small */
+           }
+       }
    </style>
 </head>
 <body>
-   <div class="full-screen">
+   <div class="container">
        <div class="field">
            <label>Purchase Price</label>
            <div class="input-group">
@@ -165,14 +164,14 @@
                </div>
            </div>
            <div class="field">
-               <label>Discount Price</label>
+               <label>Discount price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="discountPrice" min="0" oninput="calculateDiscountPrice()">
+                   <input type="number" id="sellPriceWithDiscount" min="0" readonly>
                </div>
            </div>
        </div>
-       <button type="button" id="applyDiscount" onclick="applyDiscount()">Apply discount</button>
+       <button type="button" id="copyToSellPrice" onclick="copyToSellingPrice()">Apply discount</button>
    </div>
 
    <script>
@@ -184,6 +183,7 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
 
+           // Reset Discount and Discounted Price when Selling Price is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -204,6 +204,7 @@
            let netPrice = parseFloat(document.getElementById('netPrice').value) || 0;
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
 
+           // Reset Discount and Discounted Price when Net Price is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -224,6 +225,7 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
 
+           // Reset Discount and Discounted Price when Margin is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -247,6 +249,7 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
 
+           // Reset Discount and Discounted Price when Profit Amount is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -270,6 +273,7 @@
            let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
            let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
 
+           // Reset Discounted Price when Discount is manually adjusted
            document.getElementById('sellPriceWithDiscount').value = '';
 
            if (sellingPrice > 0 && discountPercentage >= 0) {
@@ -279,20 +283,18 @@
            }
        }
 
-       function calculateDiscountPrice() {
-           let discountPrice = parseFloat(document.getElementById('discountPrice').value) || 0;
-           let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
+       function copyToSellingPrice() {
+           // Haal de waarde van Discounted Price
+           let sellPriceWithDiscount = document.getElementById('sellPriceWithDiscount').value;
+           
+           // Zet de waarde in het Selling Price veld
+           document.getElementById('sellPrice').value = sellPriceWithDiscount;
 
-           if (discountPrice > 0 && discountPercentage >= 0) {
-               let newSellingPrice = discountPrice + (discountPrice * discountPercentage / 100);
-               document.getElementById('sellPrice').value = roundDown(newSellingPrice);
-           }
-       }
+           // Reset Discount and Discounted Price fields
+           document.getElementById('discountPercentage').value = '';
+           document.getElementById('sellPriceWithDiscount').value = '';
 
-       function applyDiscount() {
-           let discountPrice = document.getElementById('discountPrice').value;
-           document.getElementById('sellPrice').value = discountPrice;
-
+           // Roep de calculate() functie aan om de marges en netprijs te herberekenen
            calculate();
        }
    </script>
