@@ -66,7 +66,7 @@
                <label>Margin (%)</label>
                <div class="input-group">
                    <span>%</span>
-                   <input type="number" id="profitMargin" min="1" max="99" oninput="calculate()">
+                   <input type="number" id="profitMargin" min="1" max="99" oninput="calculateMargin()">
                </div>
            </div>
            <div class="field">
@@ -112,11 +112,7 @@
                profitMargin = (profitAmount / netPrice) * 100;
                document.getElementById('sellPriceExcl').value = roundDown(netPrice);
            } else if (purchasePrice > 0 && profitMargin >= 1 && profitMargin <= 99) {
-               let netPrice = purchasePrice / (1 - (profitMargin / 100));
-               sellingPrice = netPrice * 1.21;
-               profitAmount = netPrice - purchasePrice;
-               document.getElementById('sellPriceIncl').value = roundDown(sellingPrice);
-               document.getElementById('sellPriceExcl').value = roundDown(netPrice);
+               calculateMargin();
            } else if (purchasePrice > 0 && profitAmount >= 0) {
                let netPrice = purchasePrice + profitAmount;
                sellingPrice = netPrice * 1.21;
@@ -127,6 +123,21 @@
 
            document.getElementById('profitMargin').value = profitMargin > 0 ? Math.min(roundDown(profitMargin), 99) : "";
            document.getElementById('profitAmount').value = profitAmount >= 0 ? roundDown(profitAmount) : "";
+       }
+
+       function calculateMargin() {
+           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
+           
+           if (purchasePrice > 0 && profitMargin >= 1 && profitMargin <= 99) {
+               let netPrice = purchasePrice / (1 - (profitMargin / 100));
+               let sellingPrice = netPrice * 1.21;
+               let profitAmount = netPrice - purchasePrice;
+               
+               document.getElementById('sellPriceIncl').value = roundDown(sellingPrice);
+               document.getElementById('sellPriceExcl').value = roundDown(netPrice);
+               document.getElementById('profitAmount').value = roundDown(profitAmount);
+           }
        }
    </script>
 </body>
