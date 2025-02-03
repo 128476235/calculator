@@ -52,7 +52,7 @@
            <label>Purchase Price</label>
            <div class="input-group">
                <span>€</span>
-               <input type="number" id="purchasePrice" oninput="calculate()">
+               <input type="number" id="purchasePrice" step="0.01" oninput="calculate()">
            </div>
        </div>
        <div class="row">
@@ -60,14 +60,14 @@
                <label>Margin (%)</label>
                <div class="input-group">
                    <span>%</span>
-                   <input type="number" id="profitMargin" oninput="calculate()">
+                   <input type="number" id="profitMargin" step="0.01" oninput="calculate()">
                </div>
            </div>
            <div class="field">
                <label>Margin (€)</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="profitAmount" oninput="calculate()">
+                   <input type="number" id="profitAmount" step="0.01" oninput="calculate()">
                </div>
            </div>
        </div>
@@ -76,14 +76,14 @@
                <label>Net Price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="sellPriceExcl" readonly>
+                   <input type="number" id="sellPriceExcl" step="0.01" readonly>
                </div>
            </div>
            <div class="field">
                <label>Selling Price</label>
                <div class="input-group">
                    <span>€</span>
-                   <input type="number" id="sellPriceIncl" oninput="calculate()">
+                   <input type="number" id="sellPriceIncl" step="0.01" oninput="calculate()">
                </div>
            </div>
        </div>
