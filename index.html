@@ -97,7 +97,7 @@
        </div>
    </div>
 
-   <script>
+  <script>
        function roundDown(value) {
            return isNaN(value) ? "" : Math.floor(value);
        }
@@ -158,6 +158,21 @@
                document.getElementById('profitMargin').value = roundDown(profitMargin);
            }
        }
-   </script>
+      function calculateFromNetPrice() {
+       let netPrice = parseFloat(document.getElementById('sellPriceExcl').value) || 0;
+       let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+       
+       if (netPrice > 0 && purchasePrice > 0) {
+           let profitAmount = netPrice - purchasePrice;
+           let profitMargin = (profitAmount / netPrice) * 100;
+           let sellingPrice = netPrice * 1.21;
+           
+           document.getElementById('profitAmount').value = roundDown(profitAmount);
+           document.getElementById('profitMargin').value = roundDown(profitMargin);
+           document.getElementById('sellPriceIncl').value = roundDown(sellingPrice);
+       }
+   }
 </body>
 </html>
+
+
