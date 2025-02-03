@@ -1,15 +1,23 @@
  <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
+<meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
    <title>Margins</title>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+   <meta name="theme-color" content="#ffffff">
+   <link rel="manifest" href="manifest.json">
+   <script>
+       if ('serviceWorker' in navigator) {
+           navigator.serviceWorker.register('/service-worker.js')
+               .then(registration => console.log('Service Worker registered with scope:', registration.scope))
+               .catch(error => console.log('Service Worker registration failed:', error));
+       }
+   </script>
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
        html, body {
@@ -23,27 +31,6 @@
            padding: 15px; border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
            display: flex; flex-direction: column; gap: 12px;
-       }
-       .field { display: flex; flex-direction: column; gap: 4px; }
-       label { font-weight: 500; text-align: left; }
-       .row { display: flex; gap: 8px; }
-       .row .field { flex: 1; }
-       .input-group {
-           display: flex;
-           align-items: center;
-           border: 1px solid #ccc;
-           border-radius: 5px;
-           overflow: hidden;
-       }
-       .input-group span {
-           background: #eee;
-           padding: 10px;
-           font-size: 14px;
-           border-right: 1px solid #ccc;
-       }
-       .input-group input {
-           width: 100%; padding: 10px; border: none;
-           font-size: 14px; text-align: left;
        }
    </style>
 </head>
