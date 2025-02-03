@@ -1,44 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
    <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-   <title>Margins</title>
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+   <title>Margin Calculator</title>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
    <meta name="apple-mobile-web-app-capable" content="yes">
    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
    <meta name="theme-color" content="#ffffff">
    <link rel="manifest" href="manifest.json">
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
    <style>
        * { margin: 0; padding: 0; box-sizing: border-box; }
        html, body {
-           width: 100%; height: 100%;
-           background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
-           display: flex; align-items: center; justify-content: center;
-           padding: 0;
+           width: 100%;
+           height: 100%;
+           overflow: hidden;
+           background-color: #f4f4f4;
+           font-family: 'Poppins', sans-serif;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding-top: 1.5em; /* Ruimte voor de Safari bookmark balk */
+           padding-bottom: 1.5em; /* Ruimte onderaan */
        }
        .container {
-           width: 100%; max-width: 420px; background: white;
-           padding: 15px; border-radius: 8px;
+           width: 100%;
+           max-width: 420px;
+           background: white;
+           padding: 15px;
+           border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 12px;
-           height: calc(100vh - 24px); /* Ensure 12px padding at top and bottom */
-           margin-top: 12px;
-           margin-bottom: 12px;
+           display: flex;
+           flex-direction: column;
+           gap: 12px;
        }
        .field { display: flex; flex-direction: column; gap: 4px; }
        label { font-weight: 500; text-align: left; }
        .row {
            display: flex;
-           flex-wrap: wrap; /* Ensures that the fields wrap on mobile */
+           flex-wrap: wrap;
            gap: 16px;
        }
        .row .field { 
            flex: 1;
-           min-width: 160px; /* Ensures that the fields don't shrink too small on mobile */
+           min-width: 160px;
        }
        .input-group {
            display: flex;
@@ -52,15 +59,14 @@
            padding: 10px;
            font-size: 14px;
            border-right: 1px solid #ccc;
-           font-weight: 500; /* Poppins Medium for currency and percentage symbols */
+           font-weight: 500;
        }
        .input-group input {
            width: 100%; padding: 10px; border: none;
            font-size: 14px; text-align: left;
            border-radius: 0 5px 5px 0;
-           font-weight: 500; /* Poppins Medium */
+           font-weight: 500;
        }
-       /* Remove number input arrows */
        input[type="number"]::-webkit-outer-spin-button,
        input[type="number"]::-webkit-inner-spin-button {
            -webkit-appearance: none;
@@ -69,11 +75,6 @@
        input[type="number"] {
            -moz-appearance: textfield;
            appearance: textfield;
-       }
-       .input-group input[type="number"] {
-           -webkit-appearance: none;
-           -moz-appearance: none;
-           appearance: none;
        }
        button {
            padding: 10px 15px;
@@ -85,91 +86,10 @@
            border-radius: 5px;
            width: 100%;
            margin-top: 12px;
-           font-weight: 700; /* Poppins Bold */
-           transition: all 0.3s ease;
+           font-weight: 700;
        }
        button:hover {
            background-color: #0056b3;
-       }
-       button:active {
-           background-color: #004085; /* Darken button on press */
-       }
-       .input-group {
-           margin-bottom: 10px;
-       }
-       .field {
-           width: 100%; /* Purchase Price field will span the full width */
-       }
-       /* Move Net Price to the left of Selling Price */
-       .row-net-price-sell {
-           display: flex;
-           flex-direction: row-reverse;
-           gap: 16px;
-       }
-       /* Custom styles for focus and input feedback */
-       input:focus {
-           border-color: #007bff;
-           outline: none;
-       }
-
-       /* Mobile Fixes */
-       @media (max-width: 768px) {
-           html, body {
-               height: 100%;
-               padding: 0;
-               overflow: hidden;
-           }
-
-           .container {
-               padding: 10px; /* Padding restored for desktop */
-               height: calc(100vh - 24px); /* Ensure container fills entire screen */
-               margin-top: 12px;
-               margin-bottom: 12px;
-               display: flex;
-               flex-direction: column;
-               justify-content: flex-start;
-           }
-
-           /* Stack elements vertically on mobile */
-           .row, .row-net-price-sell {
-               flex-direction: column;
-               gap: 10px;
-           }
-
-           .field {
-               width: 100%; /* Ensure each field takes up full width */
-           }
-
-           /* Ensure input fields are more spacious on smaller screens */
-           .input-group input {
-               width: 100%;
-               font-size: 16px; /* Increase font size for better readability */
-               padding: 12px;
-           }
-
-           .input-group span {
-               font-size: 16px; /* Increase the size of the currency/percentage symbol */
-               padding: 12px;
-           }
-
-           button {
-               width: 100%;
-               padding: 12px;
-               font-size: 16px;
-           }
-       }
-
-       /* Fix for iPhone Mini Safari rendering issue */
-       @media screen and (max-width: 375px) {
-           html, body {
-               height: 100%;
-               padding: 0;
-               overflow: hidden;
-           }
-
-           .container {
-               height: calc(100vh - 24px); /* Ensure container takes up full height with 12px margin */
-           }
        }
    </style>
 </head>
@@ -182,9 +102,9 @@
                <input type="number" id="purchasePrice" min="0" oninput="calculate()">
            </div>
        </div>
-       <div class="row-net-price-sell">
+       <div class="row">
            <div class="field">
-               <label>Excl. vat price</label>
+               <label>Excl. VAT Price</label>
                <div class="input-group">
                    <span>€</span>
                    <input type="number" id="netPrice" min="0" oninput="calculateFromNetPrice()">
@@ -207,7 +127,7 @@
                </div>
            </div>
            <div class="field">
-               <label>Margin</label>
+               <label>Margin (€)</label>
                <div class="input-group">
                    <span>€</span>
                    <input type="number" id="profitAmount" min="0" oninput="calculateProfitAmount()">
@@ -216,21 +136,21 @@
        </div>
        <div class="row">
            <div class="field">
-               <label>Discount</label>
+               <label>Discount (%)</label>
                <div class="input-group">
                    <span>%</span>
                    <input type="number" id="discountPercentage" min="0" max="99" oninput="calculateDiscount()">
                </div>
            </div>
            <div class="field">
-               <label>Discount price</label>
+               <label>Discount Price</label>
                <div class="input-group">
                    <span>€</span>
                    <input type="number" id="sellPriceWithDiscount" min="0" readonly>
                </div>
            </div>
        </div>
-       <button type="button" id="copyToSellPrice" onclick="copyToSellingPrice()">Apply discount</button>
+       <button type="button" id="copyToSellPrice" onclick="copyToSellingPrice()">Apply Discount</button>
    </div>
 
    <script>
@@ -242,7 +162,6 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
 
-           // Reset Discount and Discounted Price when Selling Price is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -263,7 +182,6 @@
            let netPrice = parseFloat(document.getElementById('netPrice').value) || 0;
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
 
-           // Reset Discount and Discounted Price when Net Price is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -284,7 +202,6 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
 
-           // Reset Discount and Discounted Price when Margin is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -308,7 +225,6 @@
            let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
            let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
 
-           // Reset Discount and Discounted Price when Profit Amount is manually adjusted
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
@@ -332,7 +248,6 @@
            let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
            let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
 
-           // Reset Discounted Price when Discount is manually adjusted
            document.getElementById('sellPriceWithDiscount').value = '';
 
            if (sellingPrice > 0 && discountPercentage >= 0) {
@@ -343,17 +258,12 @@
        }
 
        function copyToSellingPrice() {
-           // Haal de waarde van Discounted Price
            let sellPriceWithDiscount = document.getElementById('sellPriceWithDiscount').value;
-           
-           // Zet de waarde in het Selling Price veld
            document.getElementById('sellPrice').value = sellPriceWithDiscount;
 
-           // Reset Discount and Discounted Price fields
            document.getElementById('discountPercentage').value = '';
            document.getElementById('sellPriceWithDiscount').value = '';
 
-           // Roep de calculate() functie aan om de marges en netprijs te herberekenen
            calculate();
        }
    </script>
