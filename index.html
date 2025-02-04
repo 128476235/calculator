@@ -36,7 +36,6 @@
        .row .field { 
            flex: 1;
            min-width: 160px; /* Ensures that the fields don't shrink too small on mobile */
-           width: 100%; /* Ensure fields are fully stretched out */
        }
        .input-group {
            display: flex;
@@ -98,11 +97,30 @@
        /* Move Net Price to the left of Selling Price */
        .row-net-price-sell {
            display: flex;
-           flex-wrap: wrap; /* Flexwrap will keep them in line even when zoomed */
+           flex-direction: row-reverse;
            gap: 16px;
        }
-       .row-net-price-sell .field {
-           flex: 1; /* This ensures the fields stretch and are responsive */
+
+       /* Mobile-specific styles */
+       @media only screen and (max-width: 768px) {
+           .row {
+               flex-direction: column; /* Stack fields vertically on smaller screens */
+           }
+
+           .row .field {
+               width: 100%; /* Ensure fields take up the full width */
+               min-width: 100%; /* Prevent them from shrinking too small */
+           }
+
+           /* Add extra padding to the top of the container for mobile Safari */
+           body {
+               padding-top: 10vh; /* Adds extra space on top to avoid the bookmark bar */
+           }
+
+           /* Ensure that "Excl. vat price" and all other fields are stacked */
+           .row-net-price-sell {
+               flex-direction: column; /* Stack these two fields vertically on mobile */
+           }
        }
    </style>
 </head>
@@ -231,5 +249,64 @@
                let sellingPrice = netPrice * 1.21;
                let profitAmount = netPrice - purchasePrice;
 
-               document.get
+               document.getElementById('sellPrice').value = roundDown(sellingPrice);
+               document.getElementById('netPrice').value = roundDown(netPrice);
+               document.getElementById('profitAmount').value = roundDown(profitAmount);
+           }
+       }
 
+       function calculateProfitAmount() {
+           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+           let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
+
+           // Reset Discount and Discounted Price when Profit Amount is manually adjusted
+           document.getElementById('discountPercentage').value = '';
+           document.getElementById('sellPriceWithDiscount').value = '';
+
+           if (purchasePrice > 0) {
+               let netPrice = purchasePrice + profitAmount;
+               let sellingPrice = netPrice * 1.21;
+               let profitMargin = (profitAmount / netPrice) * 100;
+
+               if (profitMargin > 99) {
+                   profitMargin = 99;
+                   document.getElementById('profitMargin').value = 99;
+               }
+
+               document.getElementById('sellPrice').value = roundDown(sellingPrice);
+               document.getElementById('netPrice').value = roundDown(netPrice);
+               document.getElementById('profitMargin').value = roundDown(profitMargin);
+           }
+       }
+
+       function calculateDiscount() {
+           let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
+           let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
+
+           // Reset Discounted Price when Discount is manually adjusted
+           document.getElementById('sellPriceWithDiscount').value = '';
+
+           if (sellingPrice > 0 && discountPercentage >= 0) {
+               let discountAmount = (sellingPrice * discountPercentage) / 100;
+               let newSellingPrice = sellingPrice - discountAmount;
+               document.getElementById('sellPriceWithDiscount').value = roundDown(newSellingPrice);
+           }
+       }
+
+       function copyToSellingPrice() {
+           // Haal de waarde van Discounted Price
+           let sellPriceWithDiscount = document.getElementById('sellPriceWithDiscount').value;
+           
+           // Zet de waarde in het Selling Price veld
+           document.getElementById('sellPrice').value = sellPriceWithDiscount;
+
+           // Reset Discount and Discounted Price fields
+           document.getElementById('discountPercentage').value = '';
+           document.getElementById('sellPriceWithDiscount').value = '';
+
+           // Roep de calculate() functie aan om de marges en netprijs te herberekenen
+           calculate();
+       }
+   </script>
+</body>
+</html>
