@@ -17,21 +17,22 @@
        html, body {
            width: 100%; height: 100%; overflow-y: scroll;
            background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
-           display: flex; align-items: center; justify-content: center;
-           padding: 2vw;
+           display: flex; align-items: flex-start; justify-content: center;
+           padding: 1vh 2vw; /* Adjusted padding */
        }
        .container {
            width: 100%; max-width: 600px; background: white;
-           padding: 20px; border-radius: 8px;
-           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 20px;
+           padding: 15px; border-radius: 8px;
+           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+           display: flex; flex-direction: column; gap: 16px; /* Reduced gap */
+           margin-top: 0; /* Ensure container aligns with the top of the screen */
        }
-       .field { display: flex; flex-direction: column; gap: 8px; }
-       label { font-weight: 500; text-align: left; }
+       .field { display: flex; flex-direction: column; gap: 6px; } /* Reduced gap */
+       label { font-weight: 500; text-align: left; font-size: 14px; } /* Adjusted font size */
        .row {
            display: flex;
            flex-wrap: wrap;
-           gap: 20px;
+           gap: 16px; /* Reduced gap */
        }
        .row .field { 
            flex: 1;
@@ -46,13 +47,13 @@
        }
        .input-group span {
            background: #eee;
-           padding: 12px;
+           padding: 10px;
            font-size: 14px;
            border-right: 1px solid #ccc;
            font-weight: 500;
        }
        .input-group input {
-           width: 100%; padding: 12px; border: none;
+           width: 100%; padding: 10px; border: none;
            font-size: 14px; text-align: left;
            border-radius: 0 5px 5px 0;
            font-weight: 500;
@@ -73,7 +74,7 @@
            appearance: none;
        }
        button {
-           padding: 12px 18px;
+           padding: 10px 16px;
            background-color: #007bff;
            color: white;
            border: none;
@@ -88,7 +89,7 @@
            background-color: #0056b3;
        }
        .input-group {
-           margin-bottom: 15px;
+           margin-bottom: 12px; /* Reduced bottom margin */
        }
        .field {
            width: 100%;
@@ -106,6 +107,11 @@
 
            .row-net-price-sell {
                flex-direction: column; /* Stack Excl. vat price and Selling Price vertically on mobile */
+           }
+
+           /* Fix for mobile Safari visibility */
+           body {
+               padding-top: 8vh; /* Reduce padding for better visibility */
            }
        }
    </style>
