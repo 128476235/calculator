@@ -17,27 +17,25 @@
        html, body {
            width: 100%; height: 100%; overflow-y: scroll;
            background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
-           display: flex; align-items: flex-start; justify-content: center;
-           padding: 0; /* Removed extra padding */
+           display: flex; align-items: center; justify-content: center;
+           padding: 10vh 2vw;
        }
        .container {
-           width: 100%; max-width: 600px; background: white;
-           padding: 12px; border-radius: 8px;
-           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 12px; /* Reduced gap */
-           margin-top: 0; /* Ensure container aligns with the top of the screen */
-           align-items: center; /* Center container on desktop */
+           width: 100%; max-width: 100%; background: white;
+           padding: 15px; border-radius: 8px;
+           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+           display: flex; flex-direction: column; gap: 12px;
        }
-       .field { display: flex; flex-direction: column; gap: 6px; } /* Reduced gap */
-       label { font-weight: 500; text-align: left; font-size: 14px; } /* Adjusted font size */
+       .field { display: flex; flex-direction: column; gap: 4px; }
+       label { font-weight: 500; text-align: left; }
        .row {
            display: flex;
-           flex-wrap: wrap;
-           gap: 14px; /* Reduced gap */
+           flex-wrap: wrap; /* Ensures that the fields wrap on mobile */
+           gap: 16px;
        }
        .row .field { 
            flex: 1;
-           min-width: 220px;
+           min-width: 160px; /* Ensures that the fields don't shrink too small on mobile */
        }
        .input-group {
            display: flex;
@@ -51,15 +49,16 @@
            padding: 10px;
            font-size: 14px;
            border-right: 1px solid #ccc;
-           font-weight: 500;
+           font-weight: 500; /* Poppins Medium for currency and percentage symbols */
        }
        .input-group input {
            width: 100%; padding: 10px; border: none;
            font-size: 14px; text-align: left;
            border-radius: 0 5px 5px 0;
-           font-weight: 500;
-           outline: none;
+           font-weight: 500; /* Poppins Medium */
+           outline: none; /* Remove blue outline when focusing on input fields */
        }
+       /* Remove number input arrows */
        input[type="number"]::-webkit-outer-spin-button,
        input[type="number"]::-webkit-inner-spin-button {
            -webkit-appearance: none;
@@ -75,26 +74,33 @@
            appearance: none;
        }
        button {
-           padding: 10px 16px;
+           padding: 10px 15px;
            background-color: #007bff;
            color: white;
            border: none;
            cursor: pointer;
-           font-size: 16px;
+           font-size: 14px;
            border-radius: 5px;
            width: 100%;
-           margin-top: 16px;
-           font-weight: 700;
+           margin-top: 12px;
+           font-weight: 700; /* Poppins Bold */
        }
        button:hover {
            background-color: #0056b3;
        }
        .input-group {
-           margin-bottom: 12px; /* Reduced bottom margin */
+           margin-bottom: 10px;
        }
        .field {
-           width: 100%;
+           width: 100%; /* Purchase Price field will span the full width */
        }
+       /* Move Net Price to the left of Selling Price */
+       .row-net-price-sell {
+           display: flex;
+           flex-direction: row-reverse;
+           gap: 16px;
+       }
+
        /* Mobile-specific styles */
        @media only screen and (max-width: 768px) {
            .row {
@@ -106,13 +112,14 @@
                min-width: 100%; /* Prevent them from shrinking too small */
            }
 
-           .row-net-price-sell {
-               flex-direction: column; /* Stack Excl. vat price and Selling Price vertically on mobile */
+           /* Add extra padding to the top of the container for mobile Safari */
+           body {
+               padding-top: 10vh; /* Adds extra space on top to avoid the bookmark bar */
            }
 
-           /* Fix for mobile Safari visibility */
-           body {
-               padding-top: 8vh; /* Reduce padding for better visibility */
+           /* Ensure that "Excl. vat price" and all other fields are stacked */
+           .row-net-price-sell {
+               flex-direction: column; /* Stack these two fields vertically on mobile */
            }
        }
    </style>
@@ -128,17 +135,17 @@
        </div>
        <div class="row-net-price-sell">
            <div class="field">
-               <label>Selling Price</label>
-               <div class="input-group">
-                   <span>€</span>
-                   <input type="number" id="sellPrice" min="0" oninput="calculate()">
-               </div>
-           </div>
-           <div class="field">
                <label>Excl. vat price</label>
                <div class="input-group">
                    <span>€</span>
                    <input type="number" id="netPrice" min="0" oninput="calculateFromNetPrice()">
+               </div>
+           </div>
+           <div class="field">
+               <label>Selling Price</label>
+               <div class="input-group">
+                   <span>€</span>
+                   <input type="number" id="sellPrice" min="0" oninput="calculate()">
                </div>
            </div>
        </div>
