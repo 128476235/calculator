@@ -1,297 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-   <title>Margins</title>
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-   <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
-   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-   <meta name="apple-mobile-web-app-capable" content="yes">
-   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-   <meta name="theme-color" content="#ffffff">
-   <link rel="manifest" href="manifest.json">
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-   <style>
-       * { margin: 0; padding: 0; box-sizing: border-box; }
-       html, body {
-           width: 100%; height: 100%; overflow-y: scroll;
-           background-color: #f4f4f4; font-family: 'Poppins', sans-serif;
-           display: flex; align-items: center; justify-content: center;
-           padding: 2vw;
-       }
-       .container {
-           width: 100%; max-width: 420px; background: white;
-           padding: 15px; border-radius: 8px;
-           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 12px;
-       }
-       .field { display: flex; flex-direction: column; gap: 4px; }
-       label { font-weight: 500; text-align: left; }
-       .row {
-           display: flex;
-           flex-wrap: wrap;
-           gap: 16px;
-       }
-       .row .field { 
-           flex: 1;
-           min-width: 160px;
-       }
-       .input-group {
-           display: flex;
-           align-items: center;
-           border: 1px solid #ccc;
-           border-radius: 5px;
-           overflow: hidden;
-       }
-       .input-group span {
-           background: #eee;
-           padding: 10px;
-           font-size: 14px;
-           border-right: 1px solid #ccc;
-           font-weight: 500;
-       }
-       .input-group input {
-           width: 100%; padding: 10px; border: none;
-           font-size: 14px; text-align: left;
-           border-radius: 0 5px 5px 0;
-           font-weight: 500;
-           outline: none;
-       }
-       input[type="number"]::-webkit-outer-spin-button,
-       input[type="number"]::-webkit-inner-spin-button {
-           -webkit-appearance: none;
-           margin: 0;
-       }
-       input[type="number"] {
-           -moz-appearance: textfield;
-           appearance: textfield;
-       }
-       .input-group input[type="number"] {
-           -webkit-appearance: none;
-           -moz-appearance: none;
-           appearance: none;
-       }
-       button {
-           padding: 10px 15px;
-           background-color: #007bff;
-           color: white;
-           border: none;
-           cursor: pointer;
-           font-size: 14px;
-           border-radius: 5px;
-           width: 100%;
-           margin-top: 12px;
-           font-weight: 700;
-       }
-       button:hover {
-           background-color: #0056b3;
-       }
-       .input-group {
-           margin-bottom: 10px;
-       }
-       .field {
-           width: 100%;
-       }
-       .row-net-price-sell {
-           display: flex;
-           flex-direction: row-reverse;
-           gap: 16px;
-       }
-       @media only screen and (max-width: 768px) {
-           .row {
-               flex-direction: column;
-           }
-
-           .row .field {
-               width: 100%;
-               min-width: 100%;
-           }
-
-           body {
-               padding-top: 10vh;
-           }
-
-           .row-net-price-sell {
-               flex-direction: column;
-           }
-       }
-   </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Saldo Checker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; text-align: center; margin: 0; background-color: #f8f9fa; color: black; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; padding: 20px; box-sizing: border-box; }
+        input { margin: 10px auto; padding: 14px; font-size: 18px; font-weight: bold; border: 2px solid black; border-radius: 8px; width: 100%; max-width: 360px; background-color: black; color: white; display: block; text-align: center; }
+        input:focus { outline: none; color: white; }
+        .container { width: 100%; max-width: 400px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .saldo-text { font-size: 20px; margin: 10px 0; display: flex; justify-content: space-between; width: 100%; }
+        .naam, .bedrag { font-weight: 700; font-size: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-container { margin-top: 15px; width: 100%; }
+        .item { font-weight: 400; font-size: 16px; color: black; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #ccc; }
+        .item-name { flex: 2; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 5px; }
+        .item-price { flex: 1; text-align: right; white-space: nowrap; }
+        .item-color-right { width: 16px; height: 16px; border-radius: 50%; display: inline-block; }
+        .link-icon { width: 12px; height: 12px; display: inline-block; margin-left: 5px; }
+    </style>
 </head>
 <body>
-   <div class="container">
-       <div class="field">
-           <label>Purchase Price</label>
-           <div class="input-group">
-               <span>€</span>
-               <input type="number" id="purchasePrice" min="0" oninput="calculate()">
-           </div>
-       </div>
-       <div class="row-net-price-sell">
-           <div class="field">
-               <label>Excl. vat price</label>
-               <div class="input-group">
-                   <span>€</span>
-                   <input type="number" id="netPrice" min="0" oninput="calculateFromNetPrice()">
-               </div>
-           </div>
-           <div class="field">
-               <label>Selling Price</label>
-               <div class="input-group">
-                   <span>€</span>
-                   <input type="number" id="sellPrice" min="0" oninput="calculate()">
-               </div>
-           </div>
-       </div>
-       <div class="row">
-           <div class="field">
-               <label>Margin</label>
-               <div class="input-group">
-                   <span>%</span>
-                   <input type="number" id="profitMargin" min="0" max="99" oninput="calculateMargin()">
-               </div>
-           </div>
-           <div class="field">
-               <label>Margin</label>
-               <div class="input-group">
-                   <span>€</span>
-                   <input type="number" id="profitAmount" min="0" oninput="calculateProfitAmount()">
-               </div>
-           </div>
-       </div>
-       <div class="row">
-           <div class="field">
-               <label>Discount</label>
-               <div class="input-group">
-                   <span>%</span>
-                   <input type="number" id="discountPercentage" min="0" max="99" oninput="calculateDiscount()">
-               </div>
-           </div>
-           <div class="field">
-               <label>Discount price</label>
-               <div class="input-group">
-                   <span>€</span>
-                   <input type="number" id="sellPriceWithDiscount" min="0" readonly>
-               </div>
-           </div>
-       </div>
-       <button type="button" id="copyToSellPrice" onclick="copyToSellingPrice()">Apply discount</button>
-   </div>
-
-   <script>
-       function roundDown(value) {
-           return isNaN(value) ? "" : Math.floor(value);
-       }
-
-       function calculate() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('sellPriceWithDiscount').value = '';
-
-           if (purchasePrice > 0 && sellingPrice > 0) {
-               let netPrice = sellingPrice / 1.21;
-               let profitAmount = netPrice - purchasePrice;
-               let profitMargin = (profitAmount / netPrice) * 100;
-
-               if (profitMargin > 99) profitMargin = 99;
-
-               document.getElementById('netPrice').value = roundDown(netPrice);
-               document.getElementById('profitAmount').value = roundDown(profitAmount);
-               document.getElementById('profitMargin').value = roundDown(profitMargin);
-           }
-       }
-
-       function calculateFromNetPrice() {
-           let netPrice = parseFloat(document.getElementById('netPrice').value) || 0;
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('sellPriceWithDiscount').value = '';
-
-           if (netPrice > 0) {
-               let sellingPrice = netPrice * 1.21;
-               let profitAmount = netPrice - purchasePrice;
-               let profitMargin = (profitAmount / netPrice) * 100;
-
-               if (profitMargin > 99) profitMargin = 99;
-
-               document.getElementById('sellPrice').value = roundDown(sellingPrice);
-               document.getElementById('profitAmount').value = roundDown(profitAmount);
-               document.getElementById('profitMargin').value = roundDown(profitMargin);
-           }
-       }
-
-       function calculateMargin() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('sellPriceWithDiscount').value = '';
-
-           if (profitMargin > 99) {
-               profitMargin = 99;
-               document.getElementById('profitMargin').value = 99;
-           }
-
-           if (purchasePrice > 0) {
-               let netPrice = purchasePrice / (1 - (profitMargin / 100));
-               let sellingPrice = netPrice * 1.21;
-               let profitAmount = netPrice - purchasePrice;
-
-               document.getElementById('sellPrice').value = roundDown(sellingPrice);
-               document.getElementById('netPrice').value = roundDown(netPrice);
-               document.getElementById('profitAmount').value = roundDown(profitAmount);
-           }
-       }
-
-       function calculateProfitAmount() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('sellPriceWithDiscount').value = '';
-
-           if (purchasePrice > 0) {
-               let netPrice = purchasePrice + profitAmount;
-               let sellingPrice = netPrice * 1.21;
-               let profitMargin = (profitAmount / netPrice) * 100;
-
-               if (profitMargin > 99) {
-                   profitMargin = 99;
-                   document.getElementById('profitMargin').value = 99;
-               }
-
-               document.getElementById('sellPrice').value = roundDown(sellingPrice);
-               document.getElementById('netPrice').value = roundDown(netPrice);
-               document.getElementById('profitMargin').value = roundDown(profitMargin);
-           }
-       }
-
-       function calculateDiscount() {
-           let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-           let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
-
-           document.getElementById('sellPriceWithDiscount').value = '';
-
-           if (sellingPrice > 0 && discountPercentage >= 0) {
-               let discountAmount = (sellingPrice * discountPercentage) / 100;
-               let newSellingPrice = sellingPrice - discountAmount;
-               document.getElementById('sellPriceWithDiscount').value = roundDown(newSellingPrice);
-           }
-       }
-
-       function copyToSellingPrice() {
-           let sellPriceWithDiscount = document.getElementById('sellPriceWithDiscount').value;
-           document.getElementById('sellPrice').value = sellPriceWithDiscount;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('sellPriceWithDiscount').value = '';
-
-           calculate();
-       }
-   </script>
+    <div id="inputScreen" class="container">
+        <h2>Voer je kaartnummer in</h2>
+        <input type="text" id="klantnummer" placeholder="Kaartnummer" class="kaartnummer" oninput="checkInputLength()">
+    </div>
+    
+    <div id="saldoMessage" class="container" style="display: none;">
+        <p class="saldo-text"><span class="naam"></span> <span class="bedrag"></span></p>
+        <div class="product-container" id="productContainer"></div>
+    </div>
+    
+    <script>
+        let saldoData = {};
+        
+        async function fetchSaldoData() {
+            const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTRzczBGpxOcZcQHLLsnKP6SnkG3Np7fuew33Jy_4JyYKoyqkctuLGzCRechKWfQn94mhllfN7wPz7n/pub?output=csv";
+            const response = await fetch(url);
+            const csvText = await response.text();
+            const rows = csvText.split("\n").map(row => row.split(","));
+            
+            for (let i = 1; i < rows.length; i++) {
+                let [klantnummer, naam, saldo, ...items] = rows[i];
+                saldoData[klantnummer.trim()] = {
+                    naam: naam.trim(),
+                    saldo: saldo.trim(),
+                    items: []
+                };
+                
+                for (let j = 0; j < items.length; j += 4) {
+                    let product = items[j] ? items[j].trim() : "";
+                    let price = items[j + 1] && items[j + 1].trim() !== "" ? `€${items[j + 1].trim()}` : "";
+                    let color = items[j + 2] && items[j + 2].trim() !== "" ? items[j + 2].trim() : "transparent";
+                    let link = items[j + 3] ? items[j + 3].trim() : "";
+                    saldoData[klantnummer.trim()].items.push({ product, price: price.includes("NaN") ? "" : price, color, link });
+                }
+            }
+        }
+        
+        function checkInputLength() {
+            let inputField = document.getElementById('klantnummer');
+            if (inputField.value.length >= 5) {
+                toonSaldo();
+            }
+        }
+        
+        function toonSaldo() {
+            let klantnummer = document.getElementById("klantnummer").value.trim().replace(/\D/g, "");
+            let klant = saldoData[klantnummer];
+            
+            if (klant) {
+                document.querySelector(".naam").textContent = klant.naam;
+                document.querySelector(".bedrag").innerHTML = klant.saldo && !isNaN(klant.saldo) ? `€${Math.round(parseFloat(klant.saldo))}` : "";
+                
+                let productContainer = document.getElementById("productContainer");
+                productContainer.innerHTML = "";
+                klant.items.slice(0, 5).forEach((item) => {
+                    if (item.product) {
+                        let productName = item.link ? `<a href='${item.link}' target='_blank' style='color: inherit; text-decoration: none;'>${item.product}</a>` : item.product;
+                        let linkIcon = item.link ? `<a href='${item.link}' target='_blank'><img src='https://cdn-icons-png.flaticon.com/512/25/25284.png' alt='🔗' class='link-icon'></a>` : "";
+                        let itemElement = document.createElement("div");
+                        itemElement.classList.add("item");
+                        itemElement.innerHTML = `<span class='item-name'>${productName} ${linkIcon}</span><span class='item-price'>${item.price}</span><span class='item-color-right' style='background:${item.color};'></span>`;
+                        productContainer.appendChild(itemElement);
+                    }
+                });
+                
+                document.getElementById("inputScreen").style.display = "none";
+                document.getElementById("saldoMessage").style.display = "block";
+            } else {
+                alert("Klantnummer niet gevonden. Probeer opnieuw.");
+            }
+        }
+        
+        fetchSaldoData();
+    </script>
 </body>
 </html>
-
