@@ -21,7 +21,7 @@
            padding: 2vw;
        }
        .container {
-           width: 100%; max-width: 280px; /* Verkleinde breedte voor de container */
+           width: 100%; max-width: 170px; /* Verkleinde breedte voor de container */
            background: white;
            padding: 15px;
            border-radius: 8px;
@@ -33,7 +33,7 @@
            flex-direction: column; 
            gap: 2px;
            width: 100%;
-           max-width: 240px; /* Verkleinde breedte voor de velden */
+           max-width: 170px; /* Verkleinde breedte voor de velden */
        }
        label { font-weight: 500; text-align: left; }
        .row {
@@ -89,7 +89,7 @@
            cursor: pointer;
            font-size: 14px;
            border-radius: 5px;
-           width: 100%; /* Knop breedte past zich aan de container aan */
+           width: 100%;
            margin-top: 12px;
            font-weight: 700;
        }
@@ -108,8 +108,8 @@
                gap: 4px; /* Ruimte tussen velden in een rij op mobiel */
            }
            .field {
-               gap: 2px; /* Ruimte tussen label en invoerveld op mobiel */
-               max-width: 240px; /* Verkleinde breedte voor de velden */
+               gap: 2px;
+               max-width: 170px; /* Verkleinde breedte voor de velden op mobiel */
            }
            body {
                padding-top: 10vh;
@@ -207,111 +207,52 @@
            return isNaN(value) ? "" : Math.floor(value);
        }
 
-       // Calculate based on Purchase Price Excl.
-       function calculateFromPurchasePriceExcl() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           let purchasePriceIncl = purchasePrice * 1.21;
-           document.getElementById('purchasePriceIncl').value = roundDown(purchasePriceIncl);
-
+       function calculateDiscount() {
            let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-           if (sellingPrice > 0) {
-               let netPrice = sellingPrice / 1.21;
-               let profitAmount = netPrice - purchasePrice;
-               let profitMargin = (profitAmount / netPrice) * 100;
-               if (profitMargin > 99) profitMargin = 99;
+           let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
 
-               document.getElementById('netPrice').value = roundDown(netPrice);
-               document.getElementById('profitAmount').value = roundDown(profitAmount);
-               document.getElementById('profitMargin').value = roundDown(profitMargin);
+           document.getElementById('discountAmount').value = ''; // Reset Discount € when Discount % is changed
+
+           if (sellingPrice > 0 && discountPercentage >= 0) {
+               let discountAmount = (sellingPrice * discountPercentage) / 100;
+               let newSellingPrice = sellingPrice - discountAmount;
+               document.getElementById('discountAmount').value = roundDown(discountAmount);
+               document.getElementById('newPrice').value = roundDown(newSellingPrice);
            }
        }
 
-       // Calculate based on Purchase Price Incl.
-       function calculateFromPurchasePriceIncl() {
-           let purchasePriceIncl = parseFloat(document.getElementById('purchasePriceIncl').value) || 0;
-           let purchasePrice = purchasePriceIncl / 1.21;
-           document.getElementById('purchasePrice').value = roundDown(purchasePrice);
+       function updateDiscountAmount() {
+           let discountedPrice = parseFloat(document.getElementById('newPrice').value) || 0;
+           let originalPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
 
-           let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-           if (sellingPrice > 0) {
-               let netPrice = sellingPrice / 1.21;
-               let profitAmount = netPrice - purchasePrice;
-               let profitMargin = (profitAmount / netPrice) * 100;
-               if (profitMargin > 99) profitMargin = 99;
-
-               document.getElementById('netPrice').value = roundDown(netPrice);
-               document.getElementById('profitAmount').value = roundDown(profitAmount);
-               document.getElementById('profitMargin').value = roundDown(profitMargin);
+           if (originalPrice > 0) {
+               let discountAmount = originalPrice - discountedPrice;
+               let discountPercentage = (discountAmount / originalPrice) * 100;
+               document.getElementById('discountPercentage').value = roundDown(discountPercentage);
+               document.getElementById('discountAmount').value = roundDown(discountAmount);
            }
        }
 
-       function calculate() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
+       function updateNewPrice() {
+           let discountedPrice = parseFloat(document.getElementById('newPrice').value) || 0;
+           let originalPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
+
+           if (originalPrice > 0) {
+               let discountAmount = originalPrice - discountedPrice;
+               let discountPercentage = (discountAmount / originalPrice) * 100;
+               document.getElementById('discountPercentage').value = roundDown(discountPercentage);
+               document.getElementById('discountAmount').value = roundDown(discountAmount);
+           }
+       }
+
+       function applyDiscount() {
+           let sellPriceWithDiscount = document.getElementById('newPrice').value;
+           document.getElementById('sellPrice').value = sellPriceWithDiscount;
 
            document.getElementById('discountPercentage').value = '';
            document.getElementById('discountAmount').value = '';
 
-           if (purchasePrice > 0 && sellingPrice > 0) {
-               let netPrice = sellingPrice / 1.21;
-               let profitAmount = netPrice - purchasePrice;
-               let profitMargin = (profitAmount / netPrice) * 100;
-
-               if (profitMargin > 99) profitMargin = 99;
-
-               document.getElementById('netPrice').value = roundDown(netPrice);
-               document.getElementById('profitAmount').value = roundDown(profitAmount);
-               document.getElementById('profitMargin').value = roundDown(profitMargin);
-
-               // Calculate Purchase Price Incl. immediately when Purchase Price is entered
-               document.getElementById('purchasePriceIncl').value = roundDown(purchasePrice * 1.21);
-           }
-       }
-
-       function calculateFromNetPrice() {
-           let netPrice = parseFloat(document.getElementById('netPrice').value) || 0;
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('discountAmount').value = '';
-
-           if (netPrice > 0) {
-               let sellingPrice = netPrice * 1.21;
-               let profitAmount = netPrice - purchasePrice;
-               let profitMargin = (profitAmount / netPrice) * 100;
-
-               if (profitMargin > 99) profitMargin = 99;
-
-               document.getElementById('sellPrice').value = roundDown(sellingPrice);
-               document.getElementById('profitAmount').value = roundDown(profitAmount);
-               document.getElementById('profitMargin').value = roundDown(profitMargin);
-           }
-       }
-
-       function calculateMargin() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           let profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('discountAmount').value = '';
-
-           if (profitMargin > 99) {
-               profitMargin = 99;
-               document.getElementById('profitMargin').value = 99;
-           }
-
-           if (purchasePrice > 0) {
-               let netPrice = purchasePrice / (1 - (profitMargin / 100));
-               let sellingPrice = netPrice * 1.21;
-               let profitAmount = netPrice - purchasePrice;
-
-               document.getElementById('sellPrice').value = roundDown(sellingPrice);
-               document.getElementById('netPrice').value = roundDown(netPrice);
-               document.getElementById('profitAmount').value = roundDown(profitAmount);
-
-               // Recalculate Purchase Price Incl.
-               document.getElementById('purchasePriceIncl').value = roundDown(purchasePrice * 1.21);
-           }
+           calculate();
        }
    </script>
 </body>
