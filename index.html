@@ -21,17 +21,19 @@
            padding: 2vw;
        }
        .container {
-           width: 100%; max-width: 420px; background: white;
-           padding: 15px; border-radius: 8px;
+           width: 100%; max-width: 280px; /* Verkleinde breedte voor de container */
+           background: white;
+           padding: 15px;
+           border-radius: 8px;
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-           display: flex; flex-direction: column; gap: 4px; /* Ruimte tussen de verschillende veld-elementen */
+           display: flex; flex-direction: column; gap: 4px;
        }
        .field { 
            display: flex; 
            flex-direction: column; 
-           gap: 2px; /* Ruimte tussen label en invoerveld */
-           width: 100%; /* Zorg ervoor dat de velden de volle breedte gebruiken */
-           max-width: 300px; /* Beperk de maximale breedte voor mobiel */
+           gap: 2px;
+           width: 100%;
+           max-width: 240px; /* Verkleinde breedte voor de velden */
        }
        label { font-weight: 500; text-align: left; }
        .row {
@@ -48,7 +50,7 @@
            border: 1px solid #ccc;
            border-radius: 5px;
            overflow: hidden;
-           width: 100%; /* Zorg ervoor dat de invoervelden ook goed passen */
+           width: 100%;
        }
        .input-group span {
            background: #eee;
@@ -61,9 +63,9 @@
            width: 100%; padding: 10px; border: none;
            font-size: 14px; text-align: left;
            border-radius: 0 5px 5px 0;
-           font-weight: 700; /* Verhoogde dikte voor cijfers */
+           font-weight: 700;
            outline: none;
-           background-color: white; /* Achtergrond wit bij Excl. en Incl. */
+           background-color: white;
        }
        input[type="number"]::-webkit-outer-spin-button,
        input[type="number"]::-webkit-inner-spin-button {
@@ -87,7 +89,7 @@
            cursor: pointer;
            font-size: 14px;
            border-radius: 5px;
-           width: 100%;
+           width: 100%; /* Knop breedte past zich aan de container aan */
            margin-top: 12px;
            font-weight: 700;
        }
@@ -107,7 +109,7 @@
            }
            .field {
                gap: 2px; /* Ruimte tussen label en invoerveld op mobiel */
-               max-width: 300px; /* Beperk de maximale breedte voor mobiel */
+               max-width: 240px; /* Verkleinde breedte voor de velden */
            }
            body {
                padding-top: 10vh;
@@ -310,79 +312,6 @@
                // Recalculate Purchase Price Incl.
                document.getElementById('purchasePriceIncl').value = roundDown(purchasePrice * 1.21);
            }
-       }
-
-       function calculateProfitAmount() {
-           let purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-           let profitAmount = parseFloat(document.getElementById('profitAmount').value) || 0;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('discountAmount').value = '';
-
-           if (purchasePrice > 0) {
-               let netPrice = purchasePrice + profitAmount;
-               let sellingPrice = netPrice * 1.21;
-               let profitMargin = (profitAmount / netPrice) * 100;
-
-               if (profitMargin > 99) {
-                   profitMargin = 99;
-                   document.getElementById('profitMargin').value = 99;
-               }
-
-               document.getElementById('sellPrice').value = roundDown(sellingPrice);
-               document.getElementById('netPrice').value = roundDown(netPrice);
-               document.getElementById('profitMargin').value = roundDown(profitMargin);
-
-               // Recalculate Purchase Price Incl.
-               document.getElementById('purchasePriceIncl').value = roundDown(purchasePrice * 1.21);
-           }
-       }
-
-       function calculateDiscount() {
-           let sellingPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-           let discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
-
-           document.getElementById('discountAmount').value = '';
-
-           if (sellingPrice > 0 && discountPercentage >= 0) {
-               let discountAmount = (sellingPrice * discountPercentage) / 100;
-               let newSellingPrice = sellingPrice - discountAmount;
-               document.getElementById('discountAmount').value = roundDown(discountAmount);
-               document.getElementById('newPrice').value = roundDown(newSellingPrice);
-           }
-       }
-
-       function updateDiscountAmount() {
-           let discountedPrice = parseFloat(document.getElementById('newPrice').value) || 0;
-           let originalPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-
-           if (originalPrice > 0) {
-               let discountAmount = originalPrice - discountedPrice;
-               let discountPercentage = (discountAmount / originalPrice) * 100;
-               document.getElementById('discountPercentage').value = roundDown(discountPercentage);
-           }
-       }
-
-       function updateNewPrice() {
-           let discountedPrice = parseFloat(document.getElementById('newPrice').value) || 0;
-           let originalPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-
-           if (originalPrice > 0) {
-               let discountAmount = originalPrice - discountedPrice;
-               let discountPercentage = (discountAmount / originalPrice) * 100;
-               document.getElementById('discountPercentage').value = roundDown(discountPercentage);
-               document.getElementById('discountAmount').value = roundDown(discountAmount);
-           }
-       }
-
-       function applyDiscount() {
-           let sellPriceWithDiscount = document.getElementById('newPrice').value;
-           document.getElementById('sellPrice').value = sellPriceWithDiscount;
-
-           document.getElementById('discountPercentage').value = '';
-           document.getElementById('discountAmount').value = '';
-
-           calculate();
        }
    </script>
 </body>
